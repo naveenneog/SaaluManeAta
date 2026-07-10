@@ -1,0 +1,22 @@
+{
+  "name": "saalu-mane-ata",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Saalu Mane Ata (Navakankari / nine men's morris) — the ancient nine-pebble alignment game reborn in glowing 3D. Align three, break one; no dice, only foresight.",
+  "scripts": {
+    "test": "node --test",
+    "serve": "node scripts/serve.mjs",
+    "qa": "node tooling/qa.mjs",
+    "cap:add": "cap add android",
+    "cap:sync": "cap sync android"
+  },
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "devDependencies": {
+    "@capacitor/android": "^7.4.4",
+    "@capacitor/cli": "^7.4.4",
+    "@capacitor/core": "^7.4.4",
+    "jsdom": "^29.1.1",
+    "playwright": "^1.61.1"
+  }
+}

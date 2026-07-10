@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Saalu Mane Ata</title>
+  <meta name="theme-color" content="#120c06" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="assets/brand/favicon.png" />
+  <script type="importmap">{ "imports": { "three": "./vendor/three.module.js" } }</script>
+  <style>
+    html, body { margin: 0; height: 100%; overflow: hidden; background: #120c06; color: #f3e7d0;
+      font-family: 'Segoe UI', 'Noto Serif', Georgia, serif; -webkit-text-size-adjust: 100%; }
+    * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+    button, select, a { touch-action: manipulation; }
+    #stage { position: fixed; inset: 0; } #stage canvas { display: block; touch-action: none; }
+    nav { position: fixed; top: .5rem; left: .5rem; z-index: 70; display: flex; gap: .3rem; margin-top: env(safe-area-inset-top, 0); }
+    nav a, nav button { font: inherit; font-size: .8rem; color: #f3e7d0; background: rgba(0,0,0,.42);
+      border: 1px solid rgba(232,178,74,.35); border-radius: 9px; padding: .35rem .6rem; text-decoration: none; min-height: 40px; display: inline-flex; align-items: center; cursor: pointer; }
+    #title { position: fixed; top: .7rem; left: 0; right: 0; text-align: center; font-size: 1.2rem; letter-spacing: .05em; color: #e8b24a; text-shadow: 0 0 22px rgba(232,178,74,.5); pointer-events: none; }
+    #kn { position: fixed; top: 2.0rem; left: 0; right: 0; text-align: center; font-size: .9rem; color: #cbb98a; pointer-events: none; }
+    #status { position: fixed; top: 3.1rem; left: 0; right: 0; text-align: center; font-size: .82rem; color: #d8cfae; text-shadow: 0 2px 6px #000; pointer-events: none; padding: 0 1rem; }
+    #thinking { position: fixed; top: 3.1rem; right: .8rem; width: 11px; height: 11px; border-radius: 50%; background: #e8b24a; box-shadow: 0 0 10px #e8b24a; opacity: 0; }
+    #thinking.show { opacity: 1; animation: pulse 1s infinite; }
+    @keyframes pulse { 0%,100% { transform: scale(.7); opacity: .5; } 50% { transform: scale(1.15); opacity: 1; } }
+    #hud { position: fixed; left: 0; right: 0; bottom: 0; display: flex; gap: .5rem; align-items: center; justify-content: center; padding: .8rem;
+      padding-bottom: calc(.8rem + env(safe-area-inset-bottom, 0)); flex-wrap: wrap; background: linear-gradient(to top, rgba(18,12,6,.94) 40%, rgba(18,12,6,0)); }
+    .stat { display: inline-flex; flex-direction: column; align-items: center; font-size: .64rem; color: #cbb98a; background: rgba(0,0,0,.35); border: 1px solid rgba(232,178,74,.25); border-radius: 10px; padding: .3rem .55rem; min-width: 62px; }
+    .stat b { font-size: .95rem; color: #f3e7d0; }
+    .turn { display: inline-flex; align-items: center; gap: .4rem; font-size: .8rem; padding: .4rem .7rem; border-radius: 999px; background: rgba(0,0,0,.4); border: 1px solid rgba(232,178,74,.3); }
+    .dot { width: 12px; height: 12px; border-radius: 50%; box-shadow: 0 0 8px rgba(0,0,0,.5); }
+    #restart { font: inherit; color: #f3e7d0; background: rgba(255,255,255,.06); border: 1px solid rgba(232,178,74,.4); border-radius: 11px; padding: .5rem .8rem; cursor: pointer; min-height: 44px; }
+    #card { position: fixed; left: 50%; bottom: 5.4rem; transform: translateX(-50%) translateY(20px); width: min(92vw, 460px);
+      background: linear-gradient(180deg, #2a1c0e, #140d05); border: 1px solid rgba(232,178,74,.45); border-radius: 16px; padding: 1rem 1.2rem;
+      box-shadow: 0 20px 50px rgba(0,0,0,.6); text-align: center; opacity: 0; transition: opacity .3s, transform .3s; pointer-events: none; z-index: 60; }
+    #card.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    #card .kind { font-size: .66rem; letter-spacing: .14em; text-transform: uppercase; padding: .15rem .6rem; border-radius: 999px; background: #e8b24a; color: #17210c; }
+    #card .kind.remove { background: #e5484d; color: #fff; }
+    #card .en { color: #b7a56f; font-style: italic; margin: .5rem 0 .1rem; }
+    #card .m { margin: .3rem 0 0; font-size: 1.02rem; line-height: 1.5; }
+    #hint { position: fixed; left: 50%; bottom: 5.2rem; transform: translateX(-50%); width: min(92vw, 460px);
+      background: rgba(24,16,8,.94); border: 1px solid rgba(232,178,74,.5); border-radius: 12px; padding: .6rem .9rem;
+      font-size: .92rem; line-height: 1.4; color: #f3e7d0; text-align: center; opacity: 0; transition: opacity .25s; pointer-events: none; z-index: 61; }
+    #hint.show { opacity: 1; }
+    #hintBtn { font: inherit; color: #17210c; background: linear-gradient(180deg, #f2d777, #e8b24a); border: 0;
+      border-radius: 11px; padding: .5rem .9rem; cursor: pointer; min-height: 44px; font-weight: 600; }
+    #win { position: fixed; inset: 0; z-index: 90; display: flex; align-items: center; justify-content: center; background: rgba(9,6,2,.86); opacity: 0; pointer-events: none; transition: opacity .5s; }
+    #win.show { opacity: 1; pointer-events: auto; }
+    #win .box { width: min(90vw, 460px); text-align: center; padding: 2rem 1.4rem; }
+    #winTitle { font-size: 1.8rem; color: #e8b24a; text-shadow: 0 0 30px rgba(232,178,74,.6); margin: 0 0 .6rem; }
+    #winText { font-size: 1.05rem; line-height: 1.6; color: #e6dcc0; margin: 0 0 1.4rem; }
+    #winAgain { font: inherit; font-size: 1.05rem; color: #17210c; background: linear-gradient(180deg, #f2d777, #e8b24a); border: 0; border-radius: 14px; padding: .8rem 1.6rem; cursor: pointer; min-height: 48px; box-shadow: 0 10px 30px rgba(232,178,74,.4); }
+    #vignette { position: fixed; inset: 0; z-index: 20; pointer-events: none;
+      box-shadow: inset 0 0 min(18vw, 180px) min(5vw, 58px) rgba(0,0,0,.54); }
+    #ornate-frame { position: fixed; inset: max(7px, env(safe-area-inset-top, 0)) max(7px, env(safe-area-inset-right, 0))
+      max(7px, env(safe-area-inset-bottom, 0)) max(7px, env(safe-area-inset-left, 0)); z-index: 50; pointer-events: none;
+      border: 1px solid rgba(232,194,74,.18); box-shadow: inset 0 0 24px rgba(232,194,74,.035); }
+    .filigree-corner { position: absolute; width: 70px; height: 70px; color: rgba(240,207,114,.72);
+      border-top: 2px solid currentColor; border-left: 2px solid currentColor; filter: drop-shadow(0 0 7px rgba(232,194,74,.24)); }
+    .filigree-corner::before { content: '◆'; position: absolute; top: -9px; left: -8px; font-size: 12px; }
+    .filigree-corner::after { content: ''; position: absolute; inset: 8px 0 0 8px; border-top: 1px solid currentColor;
+      border-left: 1px solid currentColor; border-radius: 18px 0 0; opacity: .62; }
+    .filigree-corner.tr { right: 0; top: 0; transform: rotate(90deg); }
+    .filigree-corner.br { right: 0; bottom: 0; transform: rotate(180deg); }
+    .filigree-corner.bl { left: 0; bottom: 0; transform: rotate(270deg); }
+    #cinematic-title { position: fixed; z-index: 130; left: 50%; top: 42%; width: min(88vw, 760px); transform: translateY(14px) scale(.96);
+      translate: -50% -50%; text-align: center; pointer-events: none; opacity: 0; will-change: transform, opacity;
+      text-shadow: 0 3px 18px rgba(0,0,0,.95), 0 0 44px rgba(232,194,74,.46); transition: opacity .28s ease; }
+    .cinematic-kannada { font-family: 'Noto Serif Kannada', 'Noto Serif', Georgia, serif; color: #f5d980;
+      font-size: clamp(2.2rem, 8vw, 5.2rem); font-weight: 600; line-height: 1.08; letter-spacing: .06em; }
+    .cinematic-english { margin-top: .65rem; color: #f2e8d0; font-family: 'Noto Serif', Georgia, serif;
+      font-size: clamp(.78rem, 2vw, 1.15rem); letter-spacing: .24em; text-transform: uppercase; }
+    .cinematic-rule { width: min(42vw, 240px); height: 1px; margin: 1rem auto 0;
+      background: linear-gradient(90deg, transparent, rgba(240,207,114,.9), transparent); }
+    @media (max-width: 520px) { .filigree-corner { width: 52px; height: 52px; } #ornate-frame { border-color: rgba(232,194,74,.13); } }
+    @media (prefers-reduced-motion: reduce) { #cinematic-title { transition: none; } }
+    @media (max-width: 520px) { #title { font-size: 1.05rem; } .stat { min-width: 54px; } }
+  </style>
+</head>
+<body>
+  <div id="stage"></div>
+  <div id="vignette" aria-hidden="true"></div>
+  <div id="ornate-frame" aria-hidden="true">
+    <span class="filigree-corner tl"></span><span class="filigree-corner tr"></span>
+    <span class="filigree-corner br"></span><span class="filigree-corner bl"></span>
+  </div>
+  <nav><a href="index.html">‹ Home</a><a href="setup.html">Lobby</a><button id="restart">↻ Restart</button></nav>
+  <div id="title">Saalu Mane Ata</div>
+  <div id="kn"></div>
+  <div id="status"></div>
+  <div id="thinking"></div>
+  <div id="card"><span class="kind">Mill</span><p class="en"></p><p class="m"></p></div>
+  <div id="hud">
+    <div class="turn"><span class="dot" id="turnDot"></span><span id="turnLabel">—</span> · <span id="phase">—</span></div>
+    <div class="stat">Player 1<b id="p0">0+9</b></div>
+    <div class="stat">Player 2<b id="p1">0+9</b></div>
+    <button id="hintBtn">💡 Hint</button>
+  </div>
+  <div id="hint"></div>
+  <div id="win"><div class="box"><h1 id="winTitle"></h1><p id="winText"></p><button id="winAgain">Play again</button></div></div>
+  <script type="module" src="js/game3d.js"></script>
+</body>
+</html>

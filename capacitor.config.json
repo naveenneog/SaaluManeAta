@@ -1,0 +1,8 @@
+{
+  "appId": "com.naveenneog.saalumaneata",
+  "appName": "Saalu Mane Ata",
+  "webDir": "web",
+  "android": {
+    "backgroundColor": "#120c06"
+  }
+}

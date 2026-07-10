@@ -1,0 +1,32 @@
+{
+  "id": "navagraha",
+  "title": "Navagraha — the nine",
+  "kannada": "ನವಗ್ರಹ",
+  "subtitle": "a cosmic reading",
+  "intent": "Nine pebbles, nine grahas: order and chaos each try to align the heavens and unmake the other's design.",
+  "era": "fable",
+  "theme": { "bg": "#0a0a18", "board": "#16162e", "node": "#5a4bd0", "p0": "#ffcf5a", "p1": "#8b5cf6", "accent": "#7cf0ff", "text": "#eae6ff", "fog": "#0a0a18" },
+  "sides": { "p0": { "name": "Devas", "en": "The luminous" }, "p1": { "name": "Asuras", "en": "The shadowed" } },
+  "voice": { "web": "en-IN", "azure": "en-IN-Arjun:DragonHDLatestNeural" },
+  "teachings": {
+    "start": [
+      { "text": "Navakankari means 'nine pebbles'. Here they are the nine grahas, and two cosmic orders vie to bring the heavens into alignment — three lights in a line hold, and dim one of the other's." },
+      { "text": "The board is the wheel of the sky. To align three is to fix an order; to be aligned against is to fall dark." }
+    ],
+    "mill": [
+      { "text": "Three lights align — a constellation holds. In the old cosmology, alignment is order itself asserting over chaos.", "en": "Order asserts" },
+      { "text": "A line of three completes. The subtle art: seat a light where two constellations can form, so one is unstoppable.", "en": "Seat of two skies" },
+      { "text": "The heavens lock into pattern. Foresight here is prophecy — you saw the alignment before it was.", "en": "Foresight as prophecy" }
+    ],
+    "remove": [
+      { "text": "A rival light is dimmed — though never one already fixed in a constellation, unless all are. Extinguish the one that anchored their design.", "en": "Dim the anchor" },
+      { "text": "One graha falls dark. Unmake the light that held their pattern together, and the sky is yours to redraw.", "en": "Unmake the pattern" }
+    ],
+    "win": [
+      { "text": "Only two of the rival's lights remain; no alignment can form. The heavens have settled into your order.", "en": "The settled sky" }
+    ],
+    "lose": [
+      { "text": "Two lights, and no constellation left to draw. The other order has fixed the heavens against you.", "en": "The sky redrawn" }
+    ]
+  }
+}

@@ -1,0 +1,57 @@
+name: Build Android APK
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version tag for the APK (e.g. v1.0.0)"
+        required: false
+        default: "dev"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      # Capacitor 7 compiles Java source release 21 — JDK 17 fails with "invalid source release: 21".
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: android-actions/setup-android@v3
+      - name: Install Capacitor
+        run: npm install --no-save @capacitor/cli@7 @capacitor/core@7 @capacitor/android@7
+      - name: Add Android platform
+        run: npx cap add android
+      - name: Sync web assets into the Android project
+        run: npx cap sync android
+      - name: Build debug APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+      - name: Name the APK
+        run: |
+          VER="${{ github.event.release.tag_name || github.event.inputs.version || 'dev' }}"
+          cp android/app/build/outputs/apk/debug/app-debug.apk "SaaluManeAta-${VER}.apk"
+          cp android/app/build/outputs/apk/debug/app-debug.apk "SaaluManeAta.apk"
+      - name: Upload APK as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: saalumaneata-apk
+          path: SaaluManeAta*.apk
+      - name: Attach APK to the release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.release.tag_name || github.event.inputs.version }}
+          files: |
+            SaaluManeAta-*.apk
+            SaaluManeAta.apk

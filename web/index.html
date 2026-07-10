@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Saalu Mane Ata — nine men's morris, reborn in 3D</title>
+  <meta name="theme-color" content="#120c06" />
+  <meta name="description" content="Saalu Mane Ata (Navakankari) — the ancient nine-pebble alignment game, rebuilt as a glowing 3D board with three worlds: rows of houses, a marketplace, and the nine grahas." />
+  <meta property="og:title" content="Saalu Mane Ata — nine men's morris in 3D" />
+  <meta property="og:description" content="Align three, break one. The ancient nine-pebble game of foresight, reborn in glowing 3D." />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="assets/brand/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png" />
+  <meta property="og:image" content="assets/brand/hero.png" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <img class="hero-img" src="assets/brand/hero.png" alt="Saalu Mane Ata — nine men's morris" />
+      <div class="kn">ಸಾಲು ಮನೆ ಆಟ</div>
+      <h1>Saalu Mane Ata</h1>
+      <p>The ancient nine-pebble alignment game — Navakankari — reborn in glowing 3D. Three nested squares,
+        nine seeds each; line up three and break one. <b>No dice. Only foresight.</b></p>
+      <div class="cta">
+        <a class="primary" href="setup.html">Play now →</a>
+        <a class="ghost" href="https://github.com/naveenneog/SaaluManeAta/releases/latest/download/SaaluManeAta.apk">Android APK</a>
+      </div>
+    </div>
+    <div class="feat">
+      <div class="f"><b>Pure strategy, preserved</b><p>No randomiser — place, move, and once down to three, fly.
+        Mills form only on connected straight lines; never a diagonal false-mill.</p></div>
+      <div class="f"><b>Three worlds, one board</b><p>The village <i>Saalu Mane</i>, a merchant <i>Angadi</i>,
+        and the cosmic <i>Navagraha</i> — each re-reads alignment as foresight, market power, or cosmic order.</p></div>
+      <div class="f"><b>Glowing 3D &amp; a real opponent</b><p>Bloom-lit carved stones, mobile-first touch, and a
+        minimax AI that sees several moves ahead.</p></div>
+    </div>
+    <p class="foot">Part of <a href="../index.html">Traditional Board Games</a> · reconstructed with original intent ·
+      built with GitHub Copilot CLI</p>
+  </div>
+  <script>
+    (function () { var img = document.querySelector('.hero-img'); if (!img) return;
+      fetch('assets/brand/intro.mp4', { method: 'HEAD' }).then(function (r) { if (!r.ok) return;
+        var v = document.createElement('video'); v.className = 'hero-img'; v.src = 'assets/brand/intro.mp4';
+        v.poster = img.getAttribute('src'); v.autoplay = v.loop = v.muted = v.playsInline = true;
+        v.setAttribute('playsinline', ''); v.setAttribute('muted', ''); img.replaceWith(v); }).catch(function () {}); })();
+  </script>
+</body>
+</html>

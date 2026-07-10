@@ -1,0 +1,14 @@
+{
+  "name": "Saalu Mane Ata — nine men's morris",
+  "short_name": "Saalu Mane",
+  "description": "The ancient nine-pebble alignment game (Navakankari), reborn in glowing 3D.",
+  "start_url": "setup.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#120c06",
+  "theme_color": "#120c06",
+  "icons": [
+    { "src": "assets/brand/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/brand/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

@@ -1,0 +1,8 @@
+node_modules/
+android/
+ios/
+.DS_Store
+*.log
+tooling/_qa/
+tooling/__pycache__/
+.env
