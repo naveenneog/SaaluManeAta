@@ -13,6 +13,7 @@ import { initTutorial } from './tutorial.js';
 import { createGrandEffects, playOpening } from './grand.js';
 import { initSave } from './save.js';
 import { initSettings, applySettings } from './settings.js';
+import { createCoachOverlay } from './coach3d.js';
 import * as audio from './audio.js';
 
 const $ = (s) => document.querySelector(s);
@@ -120,6 +121,7 @@ async function main() {
   function place() { pol = Math.max(0.12, Math.min(1.3, pol)); dist = Math.max(radius * 0.8, Math.min(radius * 3, dist)); camera.position.set(dist * Math.sin(pol) * Math.sin(az), dist * Math.cos(pol), dist * Math.sin(pol) * Math.cos(az)); camera.lookAt(targetV); }
   place();
   const grand = createGrandEffects({ scene, boardRadius: radius, accent: hexInt(T.accent), realistic: REALISTIC, mobile: MOBILE });
+  const coach = createCoachOverlay({ scene });
   const canvas = renderer.domElement; const ptrs = new Map(); let dragged = false, pinchD = 0;
   canvas.addEventListener('pointerdown', (e) => { ptrs.set(e.pointerId, e); dragged = false; canvas.setPointerCapture(e.pointerId); });
   canvas.addEventListener('pointermove', (e) => {
@@ -236,16 +238,18 @@ async function main() {
 
   // ---- hint engine ----
   const hintRings = []; let hintTimer = null;
-  function clearHint() { for (const r of hintRings) scene.remove(r); hintRings.length = 0; const h = $('#hint'); if (h) h.classList.remove('show'); if (hintTimer) { clearTimeout(hintTimer); hintTimer = null; } }
+  function clearHint() { for (const r of hintRings) scene.remove(r); hintRings.length = 0; coach.clear(); const h = $('#hint'); if (h) h.classList.remove('show'); if (hintTimer) { clearTimeout(hintTimer); hintTimer = null; } }
   function addHintRing(node, color) { const r = new THREE.Mesh(new THREE.TorusGeometry(0.34, 0.05, 12, 32), new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 1.7 })); r.rotation.x = Math.PI / 2; r.position.copy(pos[node]); r.position.y = 0.5; scene.add(r); hintRings.push(r); }
   function showHint() {
     if (busy || state.winner !== null || !controls(state.turn)) return;
     const mv = bestMove(state, 3); if (!mv) return; clearHint();
     let txt;
-    if (mv.type === 'remove') { txt = 'Remove the glowing enemy stone — it is the one most useful to your rival.'; addHintRing(mv.at, 0xff5555); }
+    if (mv.type === 'remove') { txt = 'Remove the glowing enemy stone — it is the one most useful to your rival.'; coach.danger(pos[mv.at]); }
     else { const ns = applyMove(state, mv); const mill = ns.event && ns.event.mill; const line = mill && Array.isArray(ns.lastMill) ? ns.lastMill : null;
-      if (mv.type === 'place') { txt = mill ? 'Place on the glowing point to COMPLETE the gold mill and take an enemy stone.' : 'Place on the glowing point — it builds toward a mill or blocks your rival.'; if (line) for (const n of line) addHintRing(n, 0xffd24a); addHintRing(mv.to, mill ? 0xffffff : hexInt(T.accent)); }
-      else { txt = mill ? 'Move to the glowing point to FORM the gold mill and capture.' : 'Move to the glowing point to strengthen your line.'; if (line) for (const n of line) addHintRing(n, 0xffd24a); addHintRing(mv.from, 0xffffff); addHintRing(mv.to, hexInt(T.accent)); } }
+      if (mv.type === 'place') txt = mill ? 'Place on the glowing point to COMPLETE the gold mill and take an enemy stone.' : 'Place on the glowing point — it builds toward a mill or blocks your rival.';
+      else { txt = mill ? 'Move to the glowing point to FORM the gold mill and capture.' : 'Move to the glowing point to strengthen your line.'; coach.path([pos[mv.from], pos[mv.to]]); }
+      coach.destination(pos[mv.to]);
+      if (line) { const lp = line.map((n) => pos[n]).sort((a, b) => (a.x - b.x) || (a.z - b.z)); coach.path(lp); } }
     const h = $('#hint'); if (h) { h.textContent = '💡 ' + txt; h.classList.add('show'); } hintTimer = setTimeout(clearHint, 5200);
   }
 
@@ -280,7 +284,7 @@ async function main() {
   function updateUndo() { const b = $('#undoBtn'); if (b) b.disabled = !(!busy && controls(state.turn) && save.canUndo()); }
   function doUndo() { if (busy || !save.canUndo()) return; audio.sfx('step'); save.undo(); }
 
-  (function frame() { selRing.rotation.z += 0.03; const t = performance.now() * 0.004; for (const mk of marks) mk.position.y = (mk.geometry.type === 'TorusGeometry' ? 0.4 : 0.06) + Math.sin(t + mk.position.x) * 0.03; for (const r of hintRings) { r.rotation.z += 0.05; r.scale.setScalar(1 + Math.sin(t * 1.6) * 0.13); } grand.update(); composer.render(); requestAnimationFrame(frame); })();
+  (function frame() { selRing.rotation.z += 0.03; const t = performance.now() * 0.004; for (const mk of marks) mk.position.y = (mk.geometry.type === 'TorusGeometry' ? 0.4 : 0.06) + Math.sin(t + mk.position.x) * 0.03; for (const r of hintRings) { r.rotation.z += 0.05; r.scale.setScalar(1 + Math.sin(t * 1.6) * 0.13); } coach.update(); grand.update(); composer.render(); requestAnimationFrame(frame); })();
 
   $('#restart').addEventListener('click', () => { save.clear(); location.reload(); });
   addEventListener('pointerdown', () => audio.unlock(worldId), { once: true });
@@ -294,7 +298,7 @@ async function main() {
     { icon: '↔️', title: '2 · Move & fly', text: 'After all are placed, tap your seed then an adjacent point to move. Down to three seeds, you may fly anywhere.' },
     { icon: '🏆', title: 'Win', text: 'Reduce your rival to two seeds, or leave them with no move. Tap 💡 Hint anytime for a suggested move.' },
   ] });
-  const settingsApi = initSettings({ id: 'sma', accent: T.accent, onChange: (s) => applySettings(s, { bloomPass: bloom, grand, audio }) });
+  const settingsApi = initSettings({ id: 'sma', accent: T.accent, onChange: (s) => { applySettings(s, { bloomPass: bloom, grand, audio }); coach.setPreferences(s); } });
   busy = true;
   playOpening({
     world,
@@ -315,7 +319,7 @@ async function main() {
     legalMoves: () => legalMoves(state), play: (m) => commit(m),
     async autoplay(n = 60) { for (let i = 0; i < n && state.winner === null; i++) { while (busy) await wait(30); const m = bestMove(state, 2); if (!m) break; await commit(m); await wait(20); } return { winner: state.winner }; },
     rendererInfo: () => renderer.info.render,
-    settingsInfo: () => ({ ...settingsApi.get(), bloomEnabled: bloom.enabled, bloomStrength: bloom.strength, grand: grand.info?.() }),
+    settingsInfo: () => ({ ...settingsApi.get(), bloomEnabled: bloom.enabled, bloomStrength: bloom.strength, grand: grand.info?.(), coach: coach.info() }),
   };
 }
 main().catch((e) => { console.error(e); const s = document.querySelector('#status'); if (s) s.textContent = 'Error: ' + e.message; });
