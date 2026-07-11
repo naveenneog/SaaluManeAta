@@ -5,28 +5,75 @@
   "subtitle": "a modern reading",
   "intent": "Cornering a market is just alignment: hold the right junctions and your rival runs out of room to trade.",
   "era": "modern",
-  "theme": { "bg": "#0a1014", "board": "#122028", "node": "#2a7d8c", "p0": "#e5484d", "p1": "#e8b64a", "accent": "#4bc2d6", "text": "#e9f2f4", "fog": "#0a1014" },
-  "sides": { "p0": { "name": "Kumkuma guild", "en": "Vermilion traders" }, "p1": { "name": "Arishina guild", "en": "Turmeric traders" } },
-  "voice": { "web": "en-IN", "azure": "en-IN-Neerja:DragonHDLatestNeural" },
+  "theme": {
+    "bg": "#0a1014",
+    "board": "#122028",
+    "node": "#2a7d8c",
+    "p0": "#e5484d",
+    "p1": "#e8b64a",
+    "accent": "#4bc2d6",
+    "text": "#e9f2f4",
+    "fog": "#0a1014"
+  },
+  "sides": {
+    "p0": {
+      "name": "Kumkuma guild",
+      "en": "Vermilion traders"
+    },
+    "p1": {
+      "name": "Arishina guild",
+      "en": "Turmeric traders"
+    }
+  },
+  "voice": {
+    "web": "en-IN",
+    "azure": "en-IN-Neerja:DragonHDLatestNeural"
+  },
   "teachings": {
     "start": [
-      { "text": "Two trading guilds compete for the crossroads of a market town. Claim three stalls in a connected row and you corner that lane — and force a rival's stall to close." },
-      { "text": "The ancient alignment game, read as economics: control the junctions that feed two lanes at once, and the market bends toward you." }
+      {
+        "text": "Two trading guilds compete for the crossroads of a market town. Claim three stalls in a connected row and you corner that lane — and force a rival's stall to close."
+      },
+      {
+        "text": "The ancient alignment game, read as economics: control the junctions that feed two lanes at once, and the market bends toward you."
+      }
     ],
     "mill": [
-      { "text": "Three stalls in a row — a lane cornered. Market power is alignment: control a line and you set its price.", "en": "Corner the lane" },
-      { "text": "A row secured from a shared junction. The best positions serve two lanes at once — own those first.", "en": "Own the junction" },
-      { "text": "You lock up a lane. Real leverage comes from threatening two at once so a rival can only defend one.", "en": "Threaten two lanes" }
+      {
+        "text": "Three stalls in a row — a lane cornered. Market power is alignment: control a line and you set its price.",
+        "en": "Corner the lane"
+      },
+      {
+        "text": "A row secured from a shared junction. The best positions serve two lanes at once — own those first.",
+        "en": "Own the junction"
+      },
+      {
+        "text": "You lock up a lane. Real leverage comes from threatening two at once so a rival can only defend one.",
+        "en": "Threaten two lanes"
+      }
     ],
     "remove": [
-      { "text": "A rival stall closes — but you cannot shut one already inside a cornered lane unless all of theirs are. Close the stall that fed their network.", "en": "Close the connector" },
-      { "text": "One stall gone. Target the position that gave them options, not merely the easiest to reach.", "en": "Take their options" }
+      {
+        "text": "A rival stall closes — but you cannot shut one already inside a cornered lane unless all of theirs are. Close the stall that fed their network.",
+        "en": "Close the connector"
+      },
+      {
+        "text": "One stall gone. Target the position that gave them options, not merely the easiest to reach.",
+        "en": "Take their options"
+      }
     ],
     "win": [
-      { "text": "The rival guild is down to two stalls and can corner nothing. Positional control, not volume, decided the market.", "en": "Position over volume" }
+      {
+        "text": "The rival guild is down to two stalls and can corner nothing. Positional control, not volume, decided the market.",
+        "en": "Position over volume"
+      }
     ],
     "lose": [
-      { "text": "Two stalls left, no lane to corner. The guild that held the key junctions squeezed you out.", "en": "Squeezed out" }
+      {
+        "text": "Two stalls left, no lane to corner. The guild that held the key junctions squeezed you out.",
+        "en": "Squeezed out"
+      }
     ]
-  }
+  },
+  "realistic": true
 }

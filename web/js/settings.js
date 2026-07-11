@@ -1,5 +1,7 @@
 const QUALITIES = new Set(['high', 'balanced', 'low']);
 const TEXT_SIZES = new Set(['normal', 'large']);
+const LANGS = new Set(['en', 'kn', 'hi', 'ta', 'te', 'ml', 'mr']);
+const LANG_NAMES = { en: 'English', kn: 'ಕನ್ನಡ Kannada', hi: 'हिन्दी Hindi', ta: 'தமிழ் Tamil', te: 'తెలుగు Telugu', ml: 'മലയാളം Malayalam', mr: 'मराठी Marathi' };
 const clamp = (n) => Math.max(0, Math.min(1, Number(n)));
 const copy = (value) => JSON.parse(JSON.stringify(value));
 
@@ -11,6 +13,7 @@ const DEFAULTS = Object.freeze({
   quality: 'high',
   textSize: 'normal',
   haptics: true,
+  lang: 'en',
 });
 
 function channel(value, fallback) {
@@ -30,6 +33,7 @@ function normalize(value = {}) {
     quality: QUALITIES.has(value.quality) ? value.quality : DEFAULTS.quality,
     textSize: TEXT_SIZES.has(value.textSize) ? value.textSize : DEFAULTS.textSize,
     haptics: typeof value.haptics === 'boolean' ? value.haptics : DEFAULTS.haptics,
+    lang: LANGS.has(value.lang) ? value.lang : DEFAULTS.lang,
   };
 }
 
@@ -140,6 +144,11 @@ export function initSettings({ id, accent = '#e8c24a', onChange } = {}) {
     <aside id="tbg-settings-panel" role="dialog" aria-modal="true" aria-labelledby="tbg-settings-title">
       <div class="tbg-settings-head"><h2 id="tbg-settings-title">Settings</h2>
         <button class="tbg-settings-close" type="button" aria-label="Close settings">×</button></div>
+      <fieldset class="tbg-settings-group"><legend>Language</legend>
+        <div class="tbg-setting-line"><label for="tbg-lang">Read-out &amp; text</label>
+          <select id="tbg-lang">${Object.entries(LANG_NAMES).map(([c, n]) => `<option value="${c}">${n}</option>`).join('')}</select></div>
+        <p class="tbg-settings-note">Sets the narration voice and the on-screen teachings. Changing it reloads the game.</p>
+      </fieldset>
       <fieldset class="tbg-settings-group"><legend>Sound</legend>
         ${audioRow('music', 'Music')}${audioRow('sfx', 'Effects')}${audioRow('narration', 'Narration')}
       </fieldset>
@@ -167,6 +176,7 @@ export function initSettings({ id, accent = '#e8c24a', onChange } = {}) {
     quality: shell.querySelector('#tbg-quality'),
     textSize: shell.querySelector('#tbg-text-size'),
     haptics: shell.querySelector('#tbg-haptics'),
+    lang: shell.querySelector('#tbg-lang'),
   };
 
   const render = () => {
@@ -179,6 +189,7 @@ export function initSettings({ id, accent = '#e8c24a', onChange } = {}) {
     controls.quality.value = settings.quality;
     controls.textSize.value = settings.textSize;
     controls.haptics.checked = settings.haptics;
+    controls.lang.value = settings.lang;
   };
   const notify = () => {
     applyDocumentSettings(settings);
@@ -210,6 +221,7 @@ export function initSettings({ id, accent = '#e8c24a', onChange } = {}) {
   controls.quality.addEventListener('change', () => { settings.quality = controls.quality.value; notify(); });
   controls.textSize.addEventListener('change', () => { settings.textSize = controls.textSize.value; notify(); });
   controls.haptics.addEventListener('change', () => { settings.haptics = controls.haptics.checked; notify(); });
+  controls.lang.addEventListener('change', () => { settings.lang = controls.lang.value; try { localStorage.setItem(key, JSON.stringify(settings)); } catch { /* ignore */ } location.reload(); });
   shell.querySelector('#tbg-settings-reset').addEventListener('click', () => { settings = copy(DEFAULTS); render(); notify(); });
   button.addEventListener('click', open);
   shell.querySelector('.tbg-settings-close').addEventListener('click', close);

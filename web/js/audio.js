@@ -1,5 +1,6 @@
 let ctx = null, master = null, bed = null, bedGain = null, bedBase = 0, legacyMuted = false, unlocked = false;
-let worldId = null, currentClip = null;
+let worldId = null, currentClip = null, lang = 'en';
+export function setLang(l) { lang = l || 'en'; }
 const levels = {
   music: { volume: 1, muted: false },
   sfx: { volume: 1, muted: false },
@@ -122,12 +123,14 @@ async function startBed() {
 }
 
 const voiceMaps = {};
+const voiceBase = (wid) => (lang === 'en' ? `assets/${wid}/voice` : `assets/${wid}/voice/${lang}`);
 async function loadVoiceMap(wid) {
   if (!wid) return {};
-  if (voiceMaps[wid]) return voiceMaps[wid];
-  try { const r = await fetch(`assets/${wid}/voice/voice.json`); voiceMaps[wid] = r.ok ? await r.json() : {}; }
-  catch { voiceMaps[wid] = {}; }
-  return voiceMaps[wid];
+  const key = `${wid}/${lang}`;
+  if (voiceMaps[key]) return voiceMaps[key];
+  try { const r = await fetch(`${voiceBase(wid)}/voice.json`); voiceMaps[key] = r.ok ? await r.json() : {}; }
+  catch { voiceMaps[key] = {}; }
+  return voiceMaps[key];
 }
 
 export async function narrate(text, world) {
@@ -139,7 +142,7 @@ export async function narrate(text, world) {
   if (file) {
     try {
       currentClip?.pause();
-      const clip = new Audio(`assets/${wid}/voice/${file}`); clip.volume = volume; currentClip = clip;
+      const clip = new Audio(`${voiceBase(wid)}/${file}`); clip.volume = volume; currentClip = clip;
       await clip.play(); return;
     } catch { /* use Web Speech */ }
   }

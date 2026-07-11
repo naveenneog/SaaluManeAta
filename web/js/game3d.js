@@ -16,6 +16,7 @@ import { initSettings, applySettings } from './settings.js';
 import { createCoachOverlay } from './coach3d.js';
 import { initLearn } from './learn.js';
 import * as audio from './audio.js';
+import { setLang as i18nSetLang, savedLang, loadWorldI18n, t as tr } from './i18n.js';
 
 const $ = (s) => document.querySelector(s);
 const hexInt = (h) => parseInt(String(h || '#000').replace('#', ''), 16) || 0;
@@ -31,6 +32,7 @@ async function main() {
   let cfg = {}; try { cfg = JSON.parse(sessionStorage.getItem('sma.game') || '{}'); } catch { cfg = {}; }
   const worldId = (params.get('world') || cfg.world || 'parampare').replace(/[^a-z]/gi, '');
   const world = await (await fetch(`worlds/${worldId}.json`)).json();
+  const uiLang = savedLang('sma'); i18nSetLang(uiLang); audio.setLang(uiLang); await loadWorldI18n(worldId);
   const T = world.theme || {};
   const REALISTIC = !!world.realistic;
   document.body.classList.add('cinematic-opening');
@@ -75,11 +77,11 @@ async function main() {
   const pos = POINTS.map(([x, y]) => new THREE.Vector3((x - 3) * SP, 0, (3 - y) * SP));
   const radius = Math.max(...pos.map((p) => Math.hypot(p.x, p.z))) + 1.5;
   const slab = new THREE.Mesh(new THREE.BoxGeometry(radius * 2 + 1.4, 0.3, radius * 2 + 1.4), REALISTIC
-    ? new THREE.MeshStandardMaterial({ map: loadTexture('assets/realistic/board.jpg', [2, 2]), roughness: 0.55, metalness: 0.08, envMapIntensity: 1.15 })
+    ? new THREE.MeshStandardMaterial({ map: loadTexture('assets/' + worldId + '/board.jpg', [2, 2]), roughness: 0.55, metalness: 0.08, envMapIntensity: 1.15 })
     : new THREE.MeshStandardMaterial({ color: hexInt(T.board), roughness: 0.65, metalness: 0.25, envMapIntensity: 0.5 }));
   slab.position.y = -0.18; slab.receiveShadow = true; scene.add(slab);
   addContactShadow(scene, radius + 2, -0.03, 0.5);
-  if (REALISTIC) addTableWorld(scene, { radius: (radius + 1.4) * 2.3, tableY: -0.34, woodUrl: 'assets/realistic/board.jpg', floorHex: hexInt(T.bg) });
+  if (REALISTIC) addTableWorld(scene, { radius: (radius + 1.4) * 2.3, tableY: -0.34, woodUrl: 'assets/' + worldId + '/board.jpg', floorHex: hexInt(T.bg) });
 
   const edgeMat = new THREE.MeshStandardMaterial(REALISTIC ? { color: hexInt(T.node), emissive: 0x000000, roughness: 0.4, metalness: 0.85, envMapIntensity: 1.2 } : { color: hexInt(T.node), emissive: hexInt(T.node), emissiveIntensity: 0.7, roughness: 0.45, metalness: 0.45, envMapIntensity: 0.7 });
   const seen = new Set();
@@ -226,7 +228,7 @@ async function main() {
     if (!teaching) return;
     card.querySelector('.kind').textContent = kind === 'mill' ? 'Mill!' : 'Captured';
     card.querySelector('.kind').className = `kind ${kind}`;
-    card.querySelector('.en').textContent = teaching.en || ''; card.querySelector('.m').textContent = teaching.text;
+    card.querySelector('.en').textContent = teaching.en || ''; card.querySelector('.m').textContent = tr(teaching.text);
     card.classList.add('show'); audio.narrate(teaching.text, world); await wait(1900); card.classList.remove('show'); await wait(220);
   }
   async function onWin() {
@@ -234,7 +236,7 @@ async function main() {
     const t = rand(win === humanSide || mode === 'hotseat' ? world.teachings.win : world.teachings.lose);
     audio.sfx(mode === 'ai' && win !== humanSide ? 'lose' : 'win');
     const ov = $('#win'); ov.querySelector('#winTitle').textContent = `${nameOf(win)} win`;
-    ov.querySelector('#winText').textContent = t.text; ov.classList.add('show'); grand.victoryShower(); settingsApi?.haptic('win'); audio.narrate(t.text, world); save.clear();
+    ov.querySelector('#winText').textContent = tr(t.text); ov.classList.add('show'); grand.victoryShower(); settingsApi?.haptic('win'); audio.narrate(t.text, world); save.clear();
   }
 
   // ---- hint engine ----
