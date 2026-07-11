@@ -14,6 +14,7 @@ import { createGrandEffects, playOpening } from './grand.js';
 import { initSave } from './save.js';
 import { initSettings, applySettings } from './settings.js';
 import { createCoachOverlay } from './coach3d.js';
+import { initLearn } from './learn.js';
 import * as audio from './audio.js';
 
 const $ = (s) => document.querySelector(s);
@@ -41,7 +42,7 @@ async function main() {
   const nameOf = (p) => (p === 0 ? world.sides.p0.name : world.sides.p1.name);
   const controls = (side) => mode === 'hotseat' || side === humanSide;
 
-  let state = newGame(); let busy = false, selected = null, targets = [];
+  let state = newGame(); let busy = false, selected = null, targets = [], learning = false;
 
   // ---- three ----
   const MOBILE = matchMedia('(pointer: coarse)').matches || Math.min(innerWidth, innerHeight) < 760;
@@ -146,7 +147,7 @@ async function main() {
   }
 
   function onTap(e) {
-    if (busy || state.winner !== null || !controls(state.turn)) return;
+    if (busy || learning || state.winner !== null || !controls(state.turn)) return;
     const node = pick(e); if (node === null) return; clearHint(); audio.unlock(worldId);
     const side = state.turn;
     if (state.removePending) { const mv = legalMoves(state).find((m) => m.at === node); if (mv) commit(mv); return; }
@@ -203,7 +204,7 @@ async function main() {
 
   // ---- AI / loop ----
   async function loop() {
-    if (state.winner !== null || busy) return;
+    if (state.winner !== null || busy || learning) return;
     if (state.removePending && controls(state.turn)) { showRemovable(); hintTurn(); updateUndo(); return; }
     if (controls(state.turn)) { hintTurn(); updateUndo(); return; }
     busy = true; $('#thinking').classList.add('show'); await wait(240);
@@ -241,7 +242,7 @@ async function main() {
   function clearHint() { for (const r of hintRings) scene.remove(r); hintRings.length = 0; coach.clear(); const h = $('#hint'); if (h) h.classList.remove('show'); if (hintTimer) { clearTimeout(hintTimer); hintTimer = null; } }
   function addHintRing(node, color) { const r = new THREE.Mesh(new THREE.TorusGeometry(0.34, 0.05, 12, 32), new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 1.7 })); r.rotation.x = Math.PI / 2; r.position.copy(pos[node]); r.position.y = 0.5; scene.add(r); hintRings.push(r); }
   function showHint() {
-    if (busy || state.winner !== null || !controls(state.turn)) return;
+    if (busy || learning || state.winner !== null || !controls(state.turn)) return;
     const mv = bestMove(state, 3); if (!mv) return; clearHint();
     let txt;
     if (mv.type === 'remove') { txt = 'Remove the glowing enemy stone — it is the one most useful to your rival.'; coach.danger(pos[mv.at]); }
@@ -299,6 +300,25 @@ async function main() {
     { icon: '🏆', title: 'Win', text: 'Reduce your rival to two seeds, or leave them with no move. Tap 💡 Hint anytime for a suggested move.' },
   ] });
   const settingsApi = initSettings({ id: 'sma', accent: T.accent, onChange: (s) => { applySettings(s, { bloomPass: bloom, grand, audio }); coach.setPreferences(s); } });
+
+  // ---- Learn lesson (guided, narrated walkthrough on the real board) ----
+  const play = (s, mv) => mv.reduce((st, m) => applyMove(st, m), s);
+  const millTwo = play(newGame(), [{ type: 'place', to: 0 }, { type: 'place', to: 9 }, { type: 'place', to: 1 }]);
+  const millDone = play(millTwo, [{ type: 'place', to: 10 }, { type: 'place', to: 2 }]);
+  function rebuildStones() { for (const m of stones.values()) scene.remove(m); stones.clear(); for (let n = 0; n < state.points.length; n++) { const o = state.points[n]; if (o === 0 || o === 1) spawn(o, n); } }
+  let preLearn = null;
+  initLearn({ id: 'sma', title: 'Learn', accent: T.accent, hooks: {
+    coach, clearCoach: () => coach.clear(), narrate: (t) => audio.narrate(t, world),
+    applyState: (s) => { state = s; selected = null; targets = []; clearTargets(); clearHint(); rebuildStones(); updateHud(); },
+    setLearning: (on) => { learning = on; if (on) { preLearn = JSON.stringify(state); busy = false; selected = null; clearTargets(); clearHint(); } },
+    freshGame: () => { learning = false; try { state = preLearn ? JSON.parse(preLearn) : newGame(); } catch { state = newGame(); } preLearn = null; selected = null; targets = []; clearTargets(); clearHint(); rebuildStones(); busy = false; updateHud(); loop(); },
+  }, steps: [
+    { text: 'Two players each place nine seeds, one at a time, on the empty points — this is the placing phase.', en: 'Place your nine', position: newGame(), highlight: ({ coach: c }) => { c.destination(pos[0]); c.destination(pos[9]); } },
+    { text: 'Three of your seeds in one connected straight line is a mill. Two are already in a row, and the gold point completes it.', en: 'A line of three', position: millTwo, highlight: ({ coach: c }) => { c.path([pos[0], pos[1], pos[2]]); c.destination(pos[2]); } },
+    { text: 'The mill forms, so you take one rival seed — choose the one most useful to them, never one already inside a mill.', en: 'Take a rival seed', position: millDone, highlight: ({ coach: c }) => { c.path([pos[0], pos[1], pos[2]]); c.danger(pos[9]); c.danger(pos[10]); } },
+    { text: 'Once all are placed, slide a seed to a neighbouring point to open and re-form mills. Down to three seeds, a side may fly anywhere.', en: 'Move and fly', position: millDone, highlight: ({ coach: c }) => { c.destination(pos[1]); } },
+    { text: 'Reduce your rival to two seeds, or leave them with no move, and the board is yours. Foresight wins Saalu Mane Ata.', en: 'Foresight wins', highlight: ({ coach: c }) => { c.path([pos[0], pos[1], pos[2]]); } },
+  ] });
   busy = true;
   playOpening({
     world,
