@@ -44,6 +44,9 @@
     #hint.show { opacity: 1; }
     #hintBtn { font: inherit; color: #17210c; background: linear-gradient(180deg, #f2d777, #e8b24a); border: 0;
       border-radius: 11px; padding: .5rem .9rem; cursor: pointer; min-height: 44px; font-weight: 600; }
+    #undoBtn { font: inherit; color: #f3e7d0; background: rgba(255,255,255,.08); border: 1px solid rgba(243,231,208,.22);
+      border-radius: 11px; padding: .5rem .85rem; cursor: pointer; min-height: 44px; font-weight: 600; }
+    #undoBtn:disabled { opacity: .35; cursor: default; }
     #win { position: fixed; inset: 0; z-index: 90; display: flex; align-items: center; justify-content: center; background: rgba(9,6,2,.86); opacity: 0; pointer-events: none; transition: opacity .5s; }
     #win.show { opacity: 1; pointer-events: auto; }
     #win .box { width: min(90vw, 460px); text-align: center; padding: 2rem 1.4rem; }
@@ -95,6 +98,7 @@
     <div class="stat">Player 1<b id="p0">0+9</b></div>
     <div class="stat">Player 2<b id="p1">0+9</b></div>
     <button id="hintBtn">💡 Hint</button>
+    <button id="undoBtn" title="Take back your last move" disabled>↶ Undo</button>
   </div>
   <div id="hint"></div>
   <div id="win"><div class="box"><h1 id="winTitle"></h1><p id="winText"></p><button id="winAgain">Play again</button></div></div>

@@ -11,6 +11,8 @@ import { makeNode, makeStone } from './pieces3d.js';
 import { applyEnvironment, addContactShadow, applyRealistic, loadTexture, addTableWorld, loadPieceModel, tintPiece } from './sky.js';
 import { initTutorial } from './tutorial.js';
 import { createGrandEffects, playOpening } from './grand.js';
+import { initSave } from './save.js';
+import { initSettings, applySettings } from './settings.js';
 import * as audio from './audio.js';
 
 const $ = (s) => document.querySelector(s);
@@ -63,7 +65,8 @@ async function main() {
 
   const composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, camera));
-  composer.addPass(new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), REALISTIC ? 0.08 : (MOBILE ? 0.52 : 0.64), 0.9, REALISTIC ? 0.6 : 0.24));
+  const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), REALISTIC ? 0.08 : (MOBILE ? 0.52 : 0.64), 0.9, REALISTIC ? 0.6 : 0.24);
+  composer.addPass(bloom);
   composer.addPass(new OutputPass());
 
   // ---- board ----
@@ -162,10 +165,12 @@ async function main() {
 
   // ---- commit + animate ----
   async function commit(move) {
-    if (busy) return; busy = true; selected = null; clearTargets(); clearHint();
+    if (busy) return; busy = true; selected = null; clearTargets(); clearHint(); updateUndo();
+    save.record();
     const prev = state; state = applyMove(prev, move); await animate(prev, move, state.event); updateHud();
     if (state.event.mill) await reveal('mill', rand(world.teachings.mill));
     if (state.event.type === 'remove') await reveal('remove', rand(world.teachings.remove || world.teachings.mill));
+    save.persist();
     if (state.winner !== null) { await onWin(); busy = false; return; }
     busy = false; loop();
   }
@@ -178,7 +183,7 @@ async function main() {
       await tween(fly ? 420 : 300, (p) => { const e = easeIO(p); m.position.set(from.x + (to.x - from.x) * e, Math.sin(e * Math.PI) * (fly ? 1.4 : 0.4), from.z + (to.z - from.z) * e); });
       m.position.copy(to); stones.set(move.to, m);
     } else if (move.type === 'remove') {
-      const m = stones.get(move.at); stones.delete(move.at); audio.sfx('capture'); grand.burst(pos[move.at]);
+      const m = stones.get(move.at); stones.delete(move.at); audio.sfx('capture'); grand.burst(pos[move.at]); settingsApi?.haptic('capture');
       if (m) { await tween(320, (p) => { m.scale.setScalar(1 - p); m.position.y = p * 0.8; }); scene.remove(m); }
     }
     if (ev.mill && ev.type !== 'remove') { audio.sfx('mill'); flashMill(state.lastMill); }
@@ -197,15 +202,17 @@ async function main() {
   // ---- AI / loop ----
   async function loop() {
     if (state.winner !== null || busy) return;
-    if (state.removePending && controls(state.turn)) { showRemovable(); hintTurn(); return; }
-    if (controls(state.turn)) { hintTurn(); return; }
+    if (state.removePending && controls(state.turn)) { showRemovable(); hintTurn(); updateUndo(); return; }
+    if (controls(state.turn)) { hintTurn(); updateUndo(); return; }
     busy = true; $('#thinking').classList.add('show'); await wait(240);
     const mv = await Promise.resolve().then(() => bestMove(state, level));
     $('#thinking').classList.remove('show');
-    if (!mv) { state = { ...state, winner: other(state.turn) }; await onWin(); busy = false; return; }
+    if (!mv) { state = { ...state, winner: other(state.turn) }; save.clear(); await onWin(); busy = false; return; }
+    save.record();
     const prev = state; state = applyMove(prev, mv); await animate(prev, mv, state.event); updateHud();
     if (state.event.mill) await reveal('mill', rand(world.teachings.mill));
     if (state.event.type === 'remove') await reveal('remove', rand(world.teachings.remove || world.teachings.mill));
+    save.persist();
     if (state.winner !== null) { await onWin(); busy = false; return; }
     busy = false; loop();
   }
@@ -224,7 +231,7 @@ async function main() {
     const t = rand(win === humanSide || mode === 'hotseat' ? world.teachings.win : world.teachings.lose);
     audio.sfx(mode === 'ai' && win !== humanSide ? 'lose' : 'win');
     const ov = $('#win'); ov.querySelector('#winTitle').textContent = `${nameOf(win)} win`;
-    ov.querySelector('#winText').textContent = t.text; ov.classList.add('show'); grand.victoryShower(); audio.narrate(t.text, world);
+    ov.querySelector('#winText').textContent = t.text; ov.classList.add('show'); grand.victoryShower(); settingsApi?.haptic('win'); audio.narrate(t.text, world); save.clear();
   }
 
   // ---- hint engine ----
@@ -259,12 +266,27 @@ async function main() {
   }
   updateHud();
 
+  const save = initSave({
+    id: 'sma',
+    serialize: () => state,
+    restore: (s) => {
+      state = s; selected = null; targets = []; clearTargets(); clearHint();
+      for (const m of stones.values()) scene.remove(m); stones.clear();
+      for (let node = 0; node < state.points.length; node++) { const o = state.points[node]; if (o === 0 || o === 1) spawn(o, node); }
+      busy = false; updateHud(); loop(); updateUndo();
+    },
+    isMyTurn: (s) => mode === 'hotseat' || s.turn === humanSide,
+  });
+  function updateUndo() { const b = $('#undoBtn'); if (b) b.disabled = !(!busy && controls(state.turn) && save.canUndo()); }
+  function doUndo() { if (busy || !save.canUndo()) return; audio.sfx('step'); save.undo(); }
+
   (function frame() { selRing.rotation.z += 0.03; const t = performance.now() * 0.004; for (const mk of marks) mk.position.y = (mk.geometry.type === 'TorusGeometry' ? 0.4 : 0.06) + Math.sin(t + mk.position.x) * 0.03; for (const r of hintRings) { r.rotation.z += 0.05; r.scale.setScalar(1 + Math.sin(t * 1.6) * 0.13); } grand.update(); composer.render(); requestAnimationFrame(frame); })();
 
-  $('#restart').addEventListener('click', () => location.reload());
+  $('#restart').addEventListener('click', () => { save.clear(); location.reload(); });
   addEventListener('pointerdown', () => audio.unlock(worldId), { once: true });
-  $('#winAgain')?.addEventListener('click', () => location.reload());
+  $('#winAgain')?.addEventListener('click', () => { save.clear(); location.reload(); });
   $('#hintBtn')?.addEventListener('click', showHint);
+  $('#undoBtn')?.addEventListener('click', doUndo);
   initTutorial({ key: 'sma.tut.v1', title: 'How to play', accent: T.accent, steps: [
     { icon: '⚫', title: 'Saalu Mane Ata', text: 'Pure foresight, no dice. Two players each have nine seeds; line up three in a connected row (a mill) to remove a rival seed.' },
     { icon: '👆', title: '1 · Place', text: 'Take turns tapping empty points to place your nine seeds. Three of yours in a straight, connected line is a mill.' },
@@ -272,6 +294,7 @@ async function main() {
     { icon: '↔️', title: '2 · Move & fly', text: 'After all are placed, tap your seed then an adjacent point to move. Down to three seeds, you may fly anywhere.' },
     { icon: '🏆', title: 'Win', text: 'Reduce your rival to two seeds, or leave them with no move. Tap 💡 Hint anytime for a suggested move.' },
   ] });
+  const settingsApi = initSettings({ id: 'sma', accent: T.accent, onChange: (s) => applySettings(s, { bloomPass: bloom, grand, audio }) });
   busy = true;
   playOpening({
     world,
@@ -279,11 +302,12 @@ async function main() {
     getView: () => ({ az, pol, dist }),
     setView: (v) => { az = v.az; pol = v.pol; dist = v.dist; },
     place,
-    reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches,
+    reducedMotion: settingsApi.get().reducedMotion || matchMedia('(prefers-reduced-motion: reduce)').matches,
   }).finally(() => {
     document.body.classList.remove('cinematic-opening');
     busy = false;
-    loop();
+    if (!(save.hasSaved() && save.resume())) loop();
+    updateUndo();
   });
 
   window.__sma = {
@@ -291,6 +315,7 @@ async function main() {
     legalMoves: () => legalMoves(state), play: (m) => commit(m),
     async autoplay(n = 60) { for (let i = 0; i < n && state.winner === null; i++) { while (busy) await wait(30); const m = bestMove(state, 2); if (!m) break; await commit(m); await wait(20); } return { winner: state.winner }; },
     rendererInfo: () => renderer.info.render,
+    settingsInfo: () => ({ ...settingsApi.get(), bloomEnabled: bloom.enabled, bloomStrength: bloom.strength, grand: grand.info?.() }),
   };
 }
 main().catch((e) => { console.error(e); const s = document.querySelector('#status'); if (s) s.textContent = 'Error: ' + e.message; });

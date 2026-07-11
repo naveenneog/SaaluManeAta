@@ -57,7 +57,7 @@ function openingTitle(world) {
 export async function playOpening({ world, canvas, getView, setView, place, reducedMotion = false }) {
   const title = openingTitle(world);
   const finish = getView();
-  if (reducedMotion) {
+  if (reducedMotion || document.body.classList.contains('tbg-reduced-motion')) {
     title.style.opacity = '1';
     await new Promise((resolve) => setTimeout(resolve, 500));
     title.remove();
@@ -87,6 +87,11 @@ export async function playOpening({ world, canvas, getView, setView, place, redu
   const t0 = performance.now();
   const frame = (now) => {
     if (done) return;
+    if (document.body.classList.contains('tbg-reduced-motion')) {
+      done = true;
+      resolveOpening();
+      return;
+    }
     const p = clamp01((now - t0) / 2500);
     const e = easeInOutCubic(p);
     setView({
@@ -139,6 +144,7 @@ export function createGrandEffects({ scene, boardRadius, accent, realistic, mobi
     dustSeed[i] = Math.random() * Math.PI * 2;
   }
   scene.add(dust);
+  let dustActive = true;
 
   function burst(position) {
     const count = mobile ? 18 : 34;
@@ -183,14 +189,16 @@ export function createGrandEffects({ scene, boardRadius, accent, realistic, mobi
     const dt = Math.min(0.04, (now - last) / 1000);
     last = now;
     const time = now * 0.00025;
-    for (let i = 0; i < dustCount; i++) {
-      const j = i * 3;
-      dustPos[j] += Math.sin(time + dustSeed[i]) * dt * 0.055;
-      dustPos[j + 1] += dt * (0.025 + (i % 4) * 0.008);
-      dustPos[j + 2] += Math.cos(time * 0.8 + dustSeed[i]) * dt * 0.04;
-      if (dustPos[j + 1] > 5.9) dustPos[j + 1] = 0.35;
+    if (dustActive) {
+      for (let i = 0; i < dustCount; i++) {
+        const j = i * 3;
+        dustPos[j] += Math.sin(time + dustSeed[i]) * dt * 0.055;
+        dustPos[j + 1] += dt * (0.025 + (i % 4) * 0.008);
+        dustPos[j + 2] += Math.cos(time * 0.8 + dustSeed[i]) * dt * 0.04;
+        if (dustPos[j + 1] > 5.9) dustPos[j + 1] = 0.35;
+      }
+      dust.geometry.attributes.position.needsUpdate = true;
     }
-    dust.geometry.attributes.position.needsUpdate = true;
 
     for (let i = effects.length - 1; i >= 0; i--) {
       const fx = effects[i];
@@ -221,5 +229,19 @@ export function createGrandEffects({ scene, boardRadius, accent, realistic, mobi
     }
   }
 
-  return { update, burst, victoryShower };
+  function setVisualSettings({ quality = 'high', reducedMotion = false } = {}) {
+    const factor = quality === 'high' ? 1 : quality === 'balanced' ? 0.5 : 0;
+    const visibleCount = reducedMotion ? 0 : Math.floor(dustCount * factor);
+    dust.geometry.setDrawRange(0, visibleCount);
+    dust.visible = visibleCount > 0;
+    dustActive = dust.visible;
+  }
+
+  return {
+    update,
+    burst,
+    victoryShower,
+    setVisualSettings,
+    info: () => ({ dustVisible: dust.visible, dustCount: dust.geometry.drawRange.count }),
+  };
 }
