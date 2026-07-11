@@ -243,9 +243,9 @@ async function main() {
     const mv = bestMove(state, 3); if (!mv) return; clearHint();
     let txt;
     if (mv.type === 'remove') { txt = 'Remove the glowing enemy stone — it is the one most useful to your rival.'; addHintRing(mv.at, 0xff5555); }
-    else { const ns = applyMove(state, mv); const mill = ns.event && ns.event.mill;
-      if (mv.type === 'place') { txt = mill ? 'Place on the glowing point to COMPLETE a mill and take an enemy stone.' : 'Place on the glowing point — it builds toward a mill or blocks your rival.'; addHintRing(mv.to, mill ? 0xffffff : hexInt(T.accent)); }
-      else { txt = mill ? 'Move to the glowing point to FORM a mill and capture.' : 'Move to the glowing point to strengthen your line.'; addHintRing(mv.from, 0xffffff); addHintRing(mv.to, hexInt(T.accent)); } }
+    else { const ns = applyMove(state, mv); const mill = ns.event && ns.event.mill; const line = mill && Array.isArray(ns.lastMill) ? ns.lastMill : null;
+      if (mv.type === 'place') { txt = mill ? 'Place on the glowing point to COMPLETE the gold mill and take an enemy stone.' : 'Place on the glowing point — it builds toward a mill or blocks your rival.'; if (line) for (const n of line) addHintRing(n, 0xffd24a); addHintRing(mv.to, mill ? 0xffffff : hexInt(T.accent)); }
+      else { txt = mill ? 'Move to the glowing point to FORM the gold mill and capture.' : 'Move to the glowing point to strengthen your line.'; if (line) for (const n of line) addHintRing(n, 0xffd24a); addHintRing(mv.from, 0xffffff); addHintRing(mv.to, hexInt(T.accent)); } }
     const h = $('#hint'); if (h) { h.textContent = '💡 ' + txt; h.classList.add('show'); } hintTimer = setTimeout(clearHint, 5200);
   }
 
