@@ -123,6 +123,19 @@ export function applyMove(state, move) {
   return s;
 }
 
+// The move object IS the action; applyMove is the pure applier. canonicalState is the subset
+// hashed for replay verification (excludes `event`/`lastMill`, which are presentational).
+export function canonicalState(state) {
+  return {
+    points: state.points.slice(),
+    turn: state.turn,
+    toPlace: state.toPlace.slice(),
+    onBoard: state.onBoard.slice(),
+    removePending: state.removePending,
+    winner: state.winner,
+  };
+}
+
 function resolveWin(s) {
   for (const p of [0, 1]) {
     if (s.toPlace[p] === 0 && s.onBoard[p] < 3) { s.winner = other(p); return; }

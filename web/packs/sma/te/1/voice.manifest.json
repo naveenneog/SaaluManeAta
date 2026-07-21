@@ -1,0 +1,471 @@
+{
+  "format": "tbg-language-pack",
+  "schema": 1,
+  "game": "sma",
+  "language": "te",
+  "version": "1.8.0-alpha.1",
+  "contentVersion": 1,
+  "component": "voice",
+  "fallbackLanguage": null,
+  "bytes": 1754030,
+  "sha256": "4d87062389eb0b77e09694588acdaba36ce2d449f36ee18563063b392dee3ad8",
+  "files": [
+    {
+      "path": "packs/sma/te/1/voices.json",
+      "role": "voice-manifest",
+      "mediaType": "application/json",
+      "bytes": 8523,
+      "sha256": "a9f9c4febc0aeb26dd998c4b46fac040f1fefd32519d401953c647061e94ddf1"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.angadi.1ea898a8dbddc483891e5c3276114f9d96e52f71dbd97e101f6c220d04375d0c.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 34494,
+      "sha256": "17667f1a6e6ed1da9d1d39e54429f4c9d65cadde0d6ab78dd22385f399decc55",
+      "contentId": "voice.angadi.1ea898a8dbddc483891e5c3276114f9d96e52f71dbd97e101f6c220d04375d0c",
+      "durationMs": 8976,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.angadi.82eb8692a07b12e0016370a0406b505ac4e3a27f7208004d1590812fce2a753c.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 54999,
+      "sha256": "59a0c0dcee92508dea749ef1f790650e28336ba30c05a29c62dd4d8b1aff2bec",
+      "contentId": "voice.angadi.82eb8692a07b12e0016370a0406b505ac4e3a27f7208004d1590812fce2a753c",
+      "durationMs": 14592,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.angadi.2876ca8980d6dd2c4c38fd4d7136f80045a1b7ed9153714d9da3ae71864fe214.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 41281,
+      "sha256": "146f21cfe35f33681ac4cf88a7e07c284ad7bc398fedaec6b0f7bd693cb18b25",
+      "contentId": "voice.angadi.2876ca8980d6dd2c4c38fd4d7136f80045a1b7ed9153714d9da3ae71864fe214",
+      "durationMs": 10680,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.angadi.de862ac44d463af92ff54b943824acd8b17d3c0fea4fb0772e7ebd8231dcbfd2.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 43055,
+      "sha256": "a695e8a4991b742ad8ca209681c3c4b1ef5d6bd847ea0ff8f0a97d0934a5e75e",
+      "contentId": "voice.angadi.de862ac44d463af92ff54b943824acd8b17d3c0fea4fb0772e7ebd8231dcbfd2",
+      "durationMs": 11640,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.angadi.65cda34168d1cdc4714bb581973a02fbec32c0f459963d933cde77cab73a5f80.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 38786,
+      "sha256": "d45b60475318030c81449ae9d5f203a477d1523f7ce9575ad63d6fb91e6202b3",
+      "contentId": "voice.angadi.65cda34168d1cdc4714bb581973a02fbec32c0f459963d933cde77cab73a5f80",
+      "durationMs": 10320,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.angadi.d1504ae1440c150036ea0d5fa83ff87e02935394e7c5fd5cd5d6fae9a2b35297.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 39272,
+      "sha256": "37b06f5796cb3e2dd5437638ffe6d60902957f1c76c5bf0f402a709565cee3d5",
+      "contentId": "voice.angadi.d1504ae1440c150036ea0d5fa83ff87e02935394e7c5fd5cd5d6fae9a2b35297",
+      "durationMs": 10560,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.angadi.13c192d3d0652e5d7ee958d428c70a8649b246c8850e0d25a1547c773237596c.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 56000,
+      "sha256": "71aa0f5a236fc599e466bbd01e917fcabaa17983b49c1cd52daacbbd7fb8b382",
+      "contentId": "voice.angadi.13c192d3d0652e5d7ee958d428c70a8649b246c8850e0d25a1547c773237596c",
+      "durationMs": 14928,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.angadi.f5a8a5c356170bb018cb44f5dcee8e2881d7cb82adc557ba9db33b723248d5bc.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 32418,
+      "sha256": "234d2a06b7572a7d9e2a2dd454ca093a673a9f3ae208d79f712c2cab531cdf9d",
+      "contentId": "voice.angadi.f5a8a5c356170bb018cb44f5dcee8e2881d7cb82adc557ba9db33b723248d5bc",
+      "durationMs": 8784,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.angadi.58634a5b965e4bb87578b1ef1e3b6062d5830d8fb958bc4c4074405a8026076a.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 39083,
+      "sha256": "b59d89a51050e3be6c480e64ff01df06a0e554295bf2a2c14de11d94360cf0a5",
+      "contentId": "voice.angadi.58634a5b965e4bb87578b1ef1e3b6062d5830d8fb958bc4c4074405a8026076a",
+      "durationMs": 10560,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.angadi.dea3a8c4746b014a4d980cd673efceca1b96589d2bef83008f36fc03b32c09b9.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 37533,
+      "sha256": "145147bc7f5e008a003b901d5edafde85554cd50635d53a57affbb5fa76f7f76",
+      "contentId": "voice.angadi.dea3a8c4746b014a4d980cd673efceca1b96589d2bef83008f36fc03b32c09b9",
+      "durationMs": 10056,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.navagraha.ace342e0dc77dbeeba7a341b60b38a582e305a88b730a3f8e27403c1fc717e53.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 41244,
+      "sha256": "4027f5f845343ec1100ad47855847d27368a171ebf8fd6eac6828dc6123490d5",
+      "contentId": "voice.navagraha.ace342e0dc77dbeeba7a341b60b38a582e305a88b730a3f8e27403c1fc717e53",
+      "durationMs": 10896,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.navagraha.ab0b64ae731219c374f376ea9344e6a3b40b0ab46a84f51c6cfa34f815a33d31.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 57493,
+      "sha256": "fe9800d2fc2daab6fbc61f3a3979758e1dd1eec844a447a9b0649d82e9be1fca",
+      "contentId": "voice.navagraha.ab0b64ae731219c374f376ea9344e6a3b40b0ab46a84f51c6cfa34f815a33d31",
+      "durationMs": 15408,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.navagraha.0f647e1ee801d405b8479b9cef49ce403e14c2d3b4f9fc0b606ed70fe8eba08d.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 40166,
+      "sha256": "9d978296416a3b7d9660123cf8e4d9764d1b90811092a2b32e03f21a2c1c15ac",
+      "contentId": "voice.navagraha.0f647e1ee801d405b8479b9cef49ce403e14c2d3b4f9fc0b606ed70fe8eba08d",
+      "durationMs": 11016,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.navagraha.175ad41ab3e4df57248c5df4e09c2ce380c6bb0e6c4cedaebf3691e9a7046546.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 44353,
+      "sha256": "ef7757a151fdbacc04a8db28faa436fd0c9767cac068301961890607837791dc",
+      "contentId": "voice.navagraha.175ad41ab3e4df57248c5df4e09c2ce380c6bb0e6c4cedaebf3691e9a7046546",
+      "durationMs": 11904,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.navagraha.df088ba7ce833e185980b75bc999cdbd5060bfc2262ea3985bfe2ba3aa8ae588.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 50099,
+      "sha256": "f475f7aabca8c9ff864ae3912a21ca817a46ed0367e2a60fac408166de5253c2",
+      "contentId": "voice.navagraha.df088ba7ce833e185980b75bc999cdbd5060bfc2262ea3985bfe2ba3aa8ae588",
+      "durationMs": 13344,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.navagraha.cf99cd30320b2f25227c8219baab5c38c017699a0d241b5bc80207b9da59c2c9.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 34223,
+      "sha256": "71a2e973a6d483f9ec151db038443b22c45d49a50f8c5e825a17cc00dba992cd",
+      "contentId": "voice.navagraha.cf99cd30320b2f25227c8219baab5c38c017699a0d241b5bc80207b9da59c2c9",
+      "durationMs": 9240,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.navagraha.48d8e9ffbba6fa29d98c82ff44452ffda7c4488369dc419cfce826e8073522ba.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 50152,
+      "sha256": "46feb2325d93d77ef5046fa8d219fb3869ab6082ac643351ae9ed612f9a81b5a",
+      "contentId": "voice.navagraha.48d8e9ffbba6fa29d98c82ff44452ffda7c4488369dc419cfce826e8073522ba",
+      "durationMs": 13344,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.navagraha.44b899fbf48fa4dca975c5d34ac0cab4348835779679976e779bcab7843e9b47.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 34872,
+      "sha256": "7c8c7e33bcdea335b99341b80b3cd9bd2c737fb61de1ac86822e93ab3632a1fa",
+      "contentId": "voice.navagraha.44b899fbf48fa4dca975c5d34ac0cab4348835779679976e779bcab7843e9b47",
+      "durationMs": 9408,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.navagraha.40a644bf6c6fd45ceb0c7af1acc744e8a3c5ef9894daa796a0ff2964d92694e1.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 31765,
+      "sha256": "e9f38c1d90e3b119adaceb77075773c763ebf2c5ff4a07c8700a1e7393f0c71e",
+      "contentId": "voice.navagraha.40a644bf6c6fd45ceb0c7af1acc744e8a3c5ef9894daa796a0ff2964d92694e1",
+      "durationMs": 8640,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.navagraha.489eb5a98afbd42eab2353813020fbc100007dc6320eeeffade115c0c25fb929.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 35758,
+      "sha256": "1343338d32e7da6d7031f2055eb2acbf7feed3e4c2bd8026fa32ebbaa03ba6e6",
+      "contentId": "voice.navagraha.489eb5a98afbd42eab2353813020fbc100007dc6320eeeffade115c0c25fb929",
+      "durationMs": 9624,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.parampare.83045c701ceab2bd88308d1e3826a98a2c614f973bbbc79727df4d3f30f7436e.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 24298,
+      "sha256": "6860e842983bf79c89bade87f79b754c8388ad17d3ad3625d07d707806d9ea8f",
+      "contentId": "voice.parampare.83045c701ceab2bd88308d1e3826a98a2c614f973bbbc79727df4d3f30f7436e",
+      "durationMs": 6384,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.parampare.cb1ec7540eabae34c3159df0def01333c83d7e98b94eec57422eb46c5ce8ead8.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 54846,
+      "sha256": "176b2c282d1ee4230d0fe568fb2cfe7a46de46c12794b6fcc5a82f3acc221772",
+      "contentId": "voice.parampare.cb1ec7540eabae34c3159df0def01333c83d7e98b94eec57422eb46c5ce8ead8",
+      "durationMs": 14952,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.parampare.822c6c7f6422c3def841d4544a0db072de7613ac3b3f17b6c77a24b5e85e38f1.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 35923,
+      "sha256": "54e2670f3a22c36667fc460989d4157bcfc409d79530312e4460148fa4fbc57e",
+      "contentId": "voice.parampare.822c6c7f6422c3def841d4544a0db072de7613ac3b3f17b6c77a24b5e85e38f1",
+      "durationMs": 9192,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.parampare.646e3d3163c3a54653401fd01f39d1e4416ba64ef9e9eeef0279de0676d89b59.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 34445,
+      "sha256": "75512f3b74af5ffd87443eee433737a801018751e132614349a6e58c83692b4f",
+      "contentId": "voice.parampare.646e3d3163c3a54653401fd01f39d1e4416ba64ef9e9eeef0279de0676d89b59",
+      "durationMs": 9480,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.parampare.2ee17813606ccf67c86532ced3084afc74ccda71354c52309f27e3e2fb9ceb55.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 36765,
+      "sha256": "6f67a3e1b702ca65b7fd22863e4d3497c6d4d68c2f66266d5dbeb98adb1b2024",
+      "contentId": "voice.parampare.2ee17813606ccf67c86532ced3084afc74ccda71354c52309f27e3e2fb9ceb55",
+      "durationMs": 10104,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.parampare.51aa5f759001c005e4521765efdecac41b769c384981fb64dcca4bace749c087.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 31171,
+      "sha256": "48904a0f3fb08b70fc38fdd6040deca2d936897e83ad4fea6d66a359bca8b17e",
+      "contentId": "voice.parampare.51aa5f759001c005e4521765efdecac41b769c384981fb64dcca4bace749c087",
+      "durationMs": 8544,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.parampare.860a04f0ab57dca9f7a68cb5dd41d9a332ec0f1c7e4e872379aab76e0f4b2435.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 45343,
+      "sha256": "7d02c9e588d311c89d966f99757d310e3378fe84e8a145ff5730a2f96ad8835d",
+      "contentId": "voice.parampare.860a04f0ab57dca9f7a68cb5dd41d9a332ec0f1c7e4e872379aab76e0f4b2435",
+      "durationMs": 11664,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.parampare.6ddb43633d6ca1a6436f5462b61f191b2dba0217ea39121dc4e8a5b458a99b2c.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 31071,
+      "sha256": "37e20bbab0aa41d00655666e109b222225f1ab19d5114db09f17cf7809ba99ce",
+      "contentId": "voice.parampare.6ddb43633d6ca1a6436f5462b61f191b2dba0217ea39121dc4e8a5b458a99b2c",
+      "durationMs": 8520,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.parampare.9f1ebf16a3aa722225bfe69ff0f6b8ee8034d1d6a0d5427defc7bee3d4d5c801.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 29977,
+      "sha256": "b280baa57b024d8c6eb52118fca602ac1735c3c1651a6b084ec2c90d69cf3d46",
+      "contentId": "voice.parampare.9f1ebf16a3aa722225bfe69ff0f6b8ee8034d1d6a0d5427defc7bee3d4d5c801",
+      "durationMs": 8184,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.parampare.701012719f7670a800362c63459ce8dd722ce74c927a3f1d6c2346b418e77bc6.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 31565,
+      "sha256": "427c1399a668fdff4783e7b746d69de9c87c6b0d0313471e1cc819f558420763",
+      "contentId": "voice.parampare.701012719f7670a800362c63459ce8dd722ce74c927a3f1d6c2346b418e77bc6",
+      "durationMs": 8544,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.saalu.83045c701ceab2bd88308d1e3826a98a2c614f973bbbc79727df4d3f30f7436e.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 24298,
+      "sha256": "e0cb6245dc03c923a4db89c5b05ef6b77bdc86d4b01f5893edd1fa180adaa409",
+      "contentId": "voice.saalu.83045c701ceab2bd88308d1e3826a98a2c614f973bbbc79727df4d3f30f7436e",
+      "durationMs": 6384,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.saalu.cb1ec7540eabae34c3159df0def01333c83d7e98b94eec57422eb46c5ce8ead8.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 54640,
+      "sha256": "ccbfbc48809c035cb4d373ba4b8f5259bd1637e25c58656a279b635f59c52bc2",
+      "contentId": "voice.saalu.cb1ec7540eabae34c3159df0def01333c83d7e98b94eec57422eb46c5ce8ead8",
+      "durationMs": 14904,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.saalu.822c6c7f6422c3def841d4544a0db072de7613ac3b3f17b6c77a24b5e85e38f1.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 35326,
+      "sha256": "e8262b712a351573b8349b30a755f3b12a3f66d66cba7e200e33e1be32c9ff19",
+      "contentId": "voice.saalu.822c6c7f6422c3def841d4544a0db072de7613ac3b3f17b6c77a24b5e85e38f1",
+      "durationMs": 9048,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.saalu.646e3d3163c3a54653401fd01f39d1e4416ba64ef9e9eeef0279de0676d89b59.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 38386,
+      "sha256": "80fa017b28749f7c12a22c99d3afebd481e64564cf8676f9985ac6b0e9cbc53d",
+      "contentId": "voice.saalu.646e3d3163c3a54653401fd01f39d1e4416ba64ef9e9eeef0279de0676d89b59",
+      "durationMs": 10512,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.saalu.2ee17813606ccf67c86532ced3084afc74ccda71354c52309f27e3e2fb9ceb55.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 35384,
+      "sha256": "a265e448f33103e00b1238d70a89a79c207d947495bd0abb0c334da5cb80252a",
+      "contentId": "voice.saalu.2ee17813606ccf67c86532ced3084afc74ccda71354c52309f27e3e2fb9ceb55",
+      "durationMs": 9768,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.saalu.51aa5f759001c005e4521765efdecac41b769c384981fb64dcca4bace749c087.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 34064,
+      "sha256": "7a5bc2f587184e6ddb9cd1cbde2696461fe6fe90cccf201cd8e4d78420e71dd2",
+      "contentId": "voice.saalu.51aa5f759001c005e4521765efdecac41b769c384981fb64dcca4bace749c087",
+      "durationMs": 9240,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.saalu.860a04f0ab57dca9f7a68cb5dd41d9a332ec0f1c7e4e872379aab76e0f4b2435.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 45118,
+      "sha256": "2ad7d3497f2c57a3fe3033863260bc4a4d0e95b4c326088b9d32e1db511a5d98",
+      "contentId": "voice.saalu.860a04f0ab57dca9f7a68cb5dd41d9a332ec0f1c7e4e872379aab76e0f4b2435",
+      "durationMs": 11616,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.saalu.6ddb43633d6ca1a6436f5462b61f191b2dba0217ea39121dc4e8a5b458a99b2c.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 33957,
+      "sha256": "004797bde4c6e7939b4a1c04cbf2372b35caf7b2a766fbea484931d9e740231f",
+      "contentId": "voice.saalu.6ddb43633d6ca1a6436f5462b61f191b2dba0217ea39121dc4e8a5b458a99b2c",
+      "durationMs": 9240,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.saalu.9f1ebf16a3aa722225bfe69ff0f6b8ee8034d1d6a0d5427defc7bee3d4d5c801.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 31975,
+      "sha256": "f55504c595e3d85d0b2812d6e206379be2e255f91f35f001a4cade465d981089",
+      "contentId": "voice.saalu.9f1ebf16a3aa722225bfe69ff0f6b8ee8034d1d6a0d5427defc7bee3d4d5c801",
+      "durationMs": 8688,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.saalu.701012719f7670a800362c63459ce8dd722ce74c927a3f1d6c2346b418e77bc6.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 32865,
+      "sha256": "116221a562748e1fe7b542c379901af650b01dee83e42e8e12398f75e22bbb3c",
+      "contentId": "voice.saalu.701012719f7670a800362c63459ce8dd722ce74c927a3f1d6c2346b418e77bc6",
+      "durationMs": 8880,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.ui.97227fafb0c132b16f5d869e3a304e894209cf63ad854b1ca958f6b8518ca33d.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 25060,
+      "sha256": "db95a1a0c73a8723fee44374b9e9a7777c42ac2bb9ee2569745b1e8b0aeef3c1",
+      "contentId": "voice.ui.97227fafb0c132b16f5d869e3a304e894209cf63ad854b1ca958f6b8518ca33d",
+      "durationMs": 6576,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.ui.4e3fa67e3fdc7d771af4ace35fcf80010370c3de700ca1437b86e896fb206f86.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 39155,
+      "sha256": "7d91c272239efa189fde9ec036cb2f6b9cbfa4922fe2ebb2911b37c60e4eb336",
+      "contentId": "voice.ui.4e3fa67e3fdc7d771af4ace35fcf80010370c3de700ca1437b86e896fb206f86",
+      "durationMs": 10536,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.ui.07c25bf4460d1eb4cc5a4b24351cc9530852c7be3395e12e66aa158b02cc292e.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 39240,
+      "sha256": "64a23dd4a5da7e1cdf153e5c8f15b617ea29707e95ee76cd8b420cde152a8e08",
+      "contentId": "voice.ui.07c25bf4460d1eb4cc5a4b24351cc9530852c7be3395e12e66aa158b02cc292e",
+      "durationMs": 10200,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.ui.9ca91a5f8ea26e222b4ee2357cf56a288ca200f90a73200fc0aaafdda7fb4088.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 42472,
+      "sha256": "8979f36041b5ebe20a2495df690e8899ce926e1b84dbef62d9da2edab128c217",
+      "contentId": "voice.ui.9ca91a5f8ea26e222b4ee2357cf56a288ca200f90a73200fc0aaafdda7fb4088",
+      "durationMs": 11616,
+      "voiceId": "te-IN-ShrutiNeural"
+    },
+    {
+      "path": "packs/sma/te/1/voice/voice.ui.fa078b1aaeaa50e2180df6aa2aa45dc7b292b909c13be43b4a285fd8c9c1043b.ogg",
+      "role": "voice",
+      "mediaType": "audio/ogg",
+      "bytes": 41117,
+      "sha256": "871e4b76dfde146833fc618a772910ae6e45886a1fafcaa2510d7b5dc7e68f13",
+      "contentId": "voice.ui.fa078b1aaeaa50e2180df6aa2aa45dc7b292b909c13be43b4a285fd8c9c1043b",
+      "durationMs": 11040,
+      "voiceId": "te-IN-ShrutiNeural"
+    }
+  ]
+}

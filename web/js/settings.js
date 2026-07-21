@@ -1,3 +1,4 @@
+import { t, localizeUI } from './i18n.js';
 const QUALITIES = new Set(['high', 'balanced', 'low']);
 const TEXT_SIZES = new Set(['normal', 'large']);
 const LANGS = new Set(['en', 'kn', 'hi', 'ta', 'te', 'ml', 'mr']);
@@ -99,10 +100,10 @@ function injectStyles() {
 
 function audioRow(id, label) {
   return `<div class="tbg-audio-row">
-    <label for="tbg-${id}-volume">${label}</label>
+    <label for="tbg-${id}-volume" data-i18n>${label}</label>
     <div class="tbg-range-wrap"><input id="tbg-${id}-volume" type="range" min="0" max="1" step=".05">
       <output id="tbg-${id}-value"></output></div>
-    <label class="tbg-mute"><input id="tbg-${id}-muted" type="checkbox"> Mute</label>
+    <label class="tbg-mute"><input id="tbg-${id}-muted" type="checkbox"> <span data-i18n>Mute</span></label>
   </div>`;
 }
 
@@ -120,7 +121,7 @@ export function applySettings(settings, { bloomPass, grand, audio } = {}) {
   grand?.setVisualSettings?.({ quality: settings.quality, reducedMotion: settings.reducedMotion });
 }
 
-export function initSettings({ id, accent = '#e8c24a', onChange } = {}) {
+export function initSettings({ id, accent = '#e8c24a', onChange, onLanguageRequest } = {}) {
   if (!id) throw new Error('Settings id is required');
   const key = `tbg.${id}.settings.v1`;
   let settings = copy(DEFAULTS);
@@ -142,31 +143,35 @@ export function initSettings({ id, accent = '#e8c24a', onChange } = {}) {
   shell.setAttribute('aria-hidden', 'true');
   shell.innerHTML = `<div id="tbg-settings-scrim"></div>
     <aside id="tbg-settings-panel" role="dialog" aria-modal="true" aria-labelledby="tbg-settings-title">
-      <div class="tbg-settings-head"><h2 id="tbg-settings-title">Settings</h2>
+      <div class="tbg-settings-head"><h2 id="tbg-settings-title" data-i18n>Settings</h2>
         <button class="tbg-settings-close" type="button" aria-label="Close settings">×</button></div>
-      <fieldset class="tbg-settings-group"><legend>Language</legend>
-        <div class="tbg-setting-line"><label for="tbg-lang">Read-out &amp; text</label>
+      <fieldset class="tbg-settings-group"><legend data-i18n>Language</legend>
+        <div class="tbg-setting-line"><label for="tbg-lang" data-i18n>Read-out &amp; text</label>
           <select id="tbg-lang">${Object.entries(LANG_NAMES).map(([c, n]) => `<option value="${c}">${n}</option>`).join('')}</select></div>
-        <p class="tbg-settings-note">Sets the narration voice and the on-screen teachings. Changing it reloads the game.</p>
+        <p class="tbg-settings-note" data-i18n>Sets the narration voice and the on-screen teachings. Changing it reloads the game.</p>
       </fieldset>
-      <fieldset class="tbg-settings-group"><legend>Sound</legend>
+      <fieldset class="tbg-settings-group"><legend data-i18n>Sound</legend>
         ${audioRow('music', 'Music')}${audioRow('sfx', 'Effects')}${audioRow('narration', 'Narration')}
       </fieldset>
-      <fieldset class="tbg-settings-group"><legend>Comfort</legend>
-        <div class="tbg-setting-line"><label class="tbg-switch">Reduced motion
+      <fieldset class="tbg-settings-group"><legend data-i18n>Comfort</legend>
+        <div class="tbg-setting-line"><label class="tbg-switch"><span data-i18n>Reduced motion</span>
           <input id="tbg-reduced-motion" type="checkbox"></label></div>
-        <div class="tbg-setting-line"><label for="tbg-quality">Visual quality</label>
-          <select id="tbg-quality"><option value="high">High</option><option value="balanced">Balanced</option><option value="low">Low</option></select></div>
-        <p class="tbg-settings-note">Low quality turns off bloom and floating dust for weaker phones.</p>
-        <div class="tbg-setting-line"><label for="tbg-text-size">Text size</label>
-          <select id="tbg-text-size"><option value="normal">Normal</option><option value="large">Large</option></select></div>
-        <div class="tbg-setting-line"><label class="tbg-switch">Haptic feedback
+        <div class="tbg-setting-line"><label for="tbg-quality" data-i18n>Visual quality</label>
+          <select id="tbg-quality"><option value="high" data-i18n>High</option><option value="balanced" data-i18n>Balanced</option><option value="low" data-i18n>Low</option></select></div>
+        <p class="tbg-settings-note" data-i18n>Low quality turns off bloom and floating dust for weaker phones.</p>
+        <div class="tbg-setting-line"><label for="tbg-text-size" data-i18n>Text size</label>
+          <select id="tbg-text-size"><option value="normal" data-i18n>Normal</option><option value="large" data-i18n>Large</option></select></div>
+        <div class="tbg-setting-line"><label class="tbg-switch"><span data-i18n>Haptic feedback</span>
           <input id="tbg-haptics" type="checkbox"></label></div>
       </fieldset>
-      <button id="tbg-settings-reset" type="button">Restore defaults</button>
+      <button id="tbg-settings-reset" type="button" data-i18n>Restore defaults</button>
     </aside>`;
 
   document.body.append(button, shell);
+  button.title = t('Settings and accessibility');
+  button.setAttribute('aria-label', t('Settings and accessibility'));
+  shell.querySelector('.tbg-settings-close')?.setAttribute('aria-label', t('Close settings'));
+  localizeUI(shell);
   const panel = shell.querySelector('#tbg-settings-panel');
   const controls = {
     music: { volume: shell.querySelector('#tbg-music-volume'), muted: shell.querySelector('#tbg-music-muted'), output: shell.querySelector('#tbg-music-value') },
@@ -221,7 +226,21 @@ export function initSettings({ id, accent = '#e8c24a', onChange } = {}) {
   controls.quality.addEventListener('change', () => { settings.quality = controls.quality.value; notify(); });
   controls.textSize.addEventListener('change', () => { settings.textSize = controls.textSize.value; notify(); });
   controls.haptics.addEventListener('change', () => { settings.haptics = controls.haptics.checked; notify(); });
-  controls.lang.addEventListener('change', () => { settings.lang = controls.lang.value; try { localStorage.setItem(key, JSON.stringify(settings)); } catch { /* ignore */ } location.reload(); });
+  controls.lang.addEventListener('change', async () => {
+    const requested = controls.lang.value;
+    if (requested === settings.lang) return;
+    // When a request handler is supplied (the language store), delegate: it installs the pack if needed,
+    // activates, and reloads on success. Revert the selector immediately — a successful request reloads
+    // (re-rendering with the new language); a cancelled/failed one leaves the current language unchanged.
+    if (onLanguageRequest) {
+      controls.lang.value = settings.lang;
+      try { await onLanguageRequest(requested); } catch { /* stay on the current language */ }
+      return;
+    }
+    settings.lang = requested;
+    try { localStorage.setItem(key, JSON.stringify(settings)); } catch { /* ignore */ }
+    location.reload();
+  });
   shell.querySelector('#tbg-settings-reset').addEventListener('click', () => { settings = copy(DEFAULTS); render(); notify(); });
   button.addEventListener('click', open);
   shell.querySelector('.tbg-settings-close').addEventListener('click', close);
@@ -232,6 +251,16 @@ export function initSettings({ id, accent = '#e8c24a', onChange } = {}) {
   onChange?.(copy(settings));
   return {
     get: () => copy(settings),
+    // Set the active language WITHOUT reloading (the language store's onActivated handles re-render or
+    // reload). Updates internal state + the selector; persists to the settings blob only when asked, so a
+    // fallback (removed pack) can change the displayed language while preserving the user's saved choice.
+    setLanguage(language, { persist = false } = {}) {
+      if (!LANGS.has(language)) return settings.lang;
+      settings.lang = language;
+      if (controls.lang) controls.lang.value = language;
+      if (persist) { try { localStorage.setItem(key, JSON.stringify(settings)); } catch { /* ignore */ } }
+      return language;
+    },
     open,
     close,
     haptic(kind = 'tap') {

@@ -1,0 +1,88 @@
+{
+ "schema": 1,
+ "id": "sma-h2-fly-to-win",
+ "game": "sma",
+ "world": "saalu",
+ "engine": {
+  "version": "1.5.0"
+ },
+ "ruleset": {
+  "id": "sma.base",
+  "version": 1
+ },
+ "rng": {
+  "algorithm": "xoshiro128ss-v1",
+  "seed": "sma-h2-fly-to-win"
+ },
+ "titleKey": "sma.puzzle.h2-fly-to-win.title",
+ "briefKey": "sma.puzzle.h2-fly-to-win.brief",
+ "hintKeys": [
+  "sma.puzzle.h2-fly-to-win.hint.1",
+  "sma.puzzle.h2-fly-to-win.hint.2"
+ ],
+ "difficulty": "hard",
+ "position": {
+  "kind": "state",
+  "state": {
+   "points": [
+    0,
+    0,
+    null,
+    null,
+    null,
+    1,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    1,
+    null,
+    null,
+    null,
+    null,
+    null,
+    1,
+    0,
+    null,
+    null,
+    null
+   ],
+   "turn": 0,
+   "toPlace": [
+    0,
+    0
+   ],
+   "onBoard": [
+    3,
+    3
+   ],
+   "removePending": false,
+   "winner": null,
+   "lastMill": null,
+   "event": null
+  },
+  "stateHash": "d81b96a3c18a97b9"
+ },
+ "goal": {
+  "type": "winnerIs",
+  "side": 0
+ },
+ "constraints": {
+  "maxActions": 2
+ },
+ "solution": [
+  {
+   "type": "move",
+   "from": 20,
+   "to": 2
+  },
+  {
+   "type": "remove",
+   "at": 5
+  }
+ ],
+ "par": 2
+}

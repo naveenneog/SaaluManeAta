@@ -66,13 +66,25 @@ export function loadTexture(url, repeat = [1, 1], srgb = true) {
 // A 3D "world the board stays in": a large wooden table the board rests on, a soft
 // floor below, and a gentle domed backdrop — so the realistic board sits in a real
 // place rather than floating. `tableY` is the table-top height (board slab sits on it).
-export function addTableWorld(scene, { radius = 10, tableY = -0.18, woodUrl, floorHex = 0x1a140c }) {
-  const wood = woodUrl ? loadTexture(woodUrl, [3, 3]) : null;
-  // the table: a broad rounded wooden slab the board rests upon
-  const table = new THREE.Mesh(
-    new THREE.CylinderGeometry(radius, radius * 1.02, 0.6, 64),
-    new THREE.MeshStandardMaterial(wood ? { map: wood, roughness: 0.5, metalness: 0.06, envMapIntensity: 1.1 } : { color: 0x5a3a1e, roughness: 0.55, metalness: 0.06 }),
+export function addTableWorld(scene, { radius = 10, tableY = -0.18, woodUrl, tableUrl, tableRepeat = [3, 3], floorHex = 0x1a140c }) {
+  // Prefer a dedicated seamless tabletop tile (tableUrl); fall back to the board art
+  // (woodUrl) at a modest repeat. If tableUrl 404s at load, swap back to woodUrl so
+  // worlds that ship no table.jpg still render a valid tabletop.
+  const tableMat = new THREE.MeshStandardMaterial(
+    (tableUrl || woodUrl) ? { roughness: 0.5, metalness: 0.06, envMapIntensity: 1.1 } : { color: 0x5a3a1e, roughness: 0.55, metalness: 0.06 },
   );
+  const applyTex = (url, repeat) => {
+    const t = new THREE.TextureLoader().load(url, undefined, undefined, () => {
+      if (url !== woodUrl && woodUrl) applyTex(woodUrl, [3, 3]); // graceful fallback
+    });
+    t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(repeat[0], repeat[1]);
+    t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8;
+    tableMat.map = t; tableMat.needsUpdate = true;
+  };
+  if (tableUrl) applyTex(tableUrl, tableRepeat);
+  else if (woodUrl) applyTex(woodUrl, [3, 3]);
+  // the table: a broad rounded wooden slab the board rests upon
+  const table = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius * 1.02, 0.6, 64), tableMat);
   table.position.y = tableY - 0.3; table.receiveShadow = true; scene.add(table);
   // a soft rounded lip so the table edge catches light
   const lip = new THREE.Mesh(new THREE.TorusGeometry(radius, 0.12, 12, 64), new THREE.MeshStandardMaterial({ color: 0x2a1c10, roughness: 0.4, metalness: 0.3, envMapIntensity: 1.0 }));

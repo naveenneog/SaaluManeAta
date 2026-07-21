@@ -1,0 +1,90 @@
+{
+ "schema": 1,
+ "id": "sma-m2-open-and-take",
+ "game": "sma",
+ "world": "saalu",
+ "engine": {
+  "version": "1.5.0"
+ },
+ "ruleset": {
+  "id": "sma.base",
+  "version": 1
+ },
+ "rng": {
+  "algorithm": "xoshiro128ss-v1",
+  "seed": "sma-m2-open-and-take"
+ },
+ "titleKey": "sma.puzzle.m2-open-and-take.title",
+ "briefKey": "sma.puzzle.m2-open-and-take.brief",
+ "hintKeys": [
+  "sma.puzzle.m2-open-and-take.hint.1",
+  "sma.puzzle.m2-open-and-take.hint.2"
+ ],
+ "difficulty": "medium",
+ "position": {
+  "kind": "state",
+  "state": {
+   "points": [
+    0,
+    null,
+    null,
+    null,
+    null,
+    null,
+    0,
+    0,
+    null,
+    null,
+    null,
+    null,
+    0,
+    null,
+    null,
+    1,
+    1,
+    null,
+    null,
+    null,
+    1,
+    null,
+    null,
+    null
+   ],
+   "turn": 0,
+   "toPlace": [
+    0,
+    0
+   ],
+   "onBoard": [
+    4,
+    3
+   ],
+   "removePending": false,
+   "winner": null,
+   "lastMill": null,
+   "event": null
+  },
+  "stateHash": "37da631452fccb2c"
+ },
+ "goal": {
+  "type": "custom",
+  "name": "rivalRemoved",
+  "at": 16,
+  "rival": 1
+ },
+ "constraints": {
+  "maxActions": 2
+ },
+ "solution": [
+  {
+   "type": "move",
+   "from": 12,
+   "to": 8
+  },
+  {
+   "type": "remove",
+   "at": 16
+  }
+ ],
+ "par": 2
+}

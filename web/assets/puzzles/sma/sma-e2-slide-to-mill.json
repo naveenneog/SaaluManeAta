@@ -1,0 +1,84 @@
+{
+ "schema": 1,
+ "id": "sma-e2-slide-to-mill",
+ "game": "sma",
+ "world": "saalu",
+ "engine": {
+  "version": "1.5.0"
+ },
+ "ruleset": {
+  "id": "sma.base",
+  "version": 1
+ },
+ "rng": {
+  "algorithm": "xoshiro128ss-v1",
+  "seed": "sma-e2-slide-to-mill"
+ },
+ "titleKey": "sma.puzzle.e2-slide-to-mill.title",
+ "briefKey": "sma.puzzle.e2-slide-to-mill.brief",
+ "hintKeys": [
+  "sma.puzzle.e2-slide-to-mill.hint.1",
+  "sma.puzzle.e2-slide-to-mill.hint.2"
+ ],
+ "difficulty": "easy",
+ "position": {
+  "kind": "state",
+  "state": {
+   "points": [
+    1,
+    null,
+    null,
+    0,
+    0,
+    null,
+    null,
+    null,
+    1,
+    0,
+    null,
+    null,
+    null,
+    0,
+    null,
+    null,
+    null,
+    1,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+   ],
+   "turn": 0,
+   "toPlace": [
+    0,
+    0
+   ],
+   "onBoard": [
+    4,
+    3
+   ],
+   "removePending": false,
+   "winner": null,
+   "lastMill": null,
+   "event": null
+  },
+  "stateHash": "a0d012e10d34f126"
+ },
+ "goal": {
+  "type": "flag",
+  "path": "removePending"
+ },
+ "constraints": {
+  "maxActions": 1
+ },
+ "solution": [
+  {
+   "type": "move",
+   "from": 13,
+   "to": 5
+  }
+ ],
+ "par": 1
+}

@@ -1,0 +1,89 @@
+{
+ "schema": 1,
+ "id": "sma-m1-take-the-threat",
+ "game": "sma",
+ "world": "saalu",
+ "engine": {
+  "version": "1.5.0"
+ },
+ "ruleset": {
+  "id": "sma.base",
+  "version": 1
+ },
+ "rng": {
+  "algorithm": "xoshiro128ss-v1",
+  "seed": "sma-m1-take-the-threat"
+ },
+ "titleKey": "sma.puzzle.m1-take-the-threat.title",
+ "briefKey": "sma.puzzle.m1-take-the-threat.brief",
+ "hintKeys": [
+  "sma.puzzle.m1-take-the-threat.hint.1",
+  "sma.puzzle.m1-take-the-threat.hint.2"
+ ],
+ "difficulty": "medium",
+ "position": {
+  "kind": "state",
+  "state": {
+   "points": [
+    0,
+    0,
+    null,
+    1,
+    1,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    1,
+    null,
+    null,
+    null
+   ],
+   "turn": 0,
+   "toPlace": [
+    7,
+    6
+   ],
+   "onBoard": [
+    2,
+    3
+   ],
+   "removePending": false,
+   "winner": null,
+   "lastMill": null,
+   "event": null
+  },
+  "stateHash": "c45dd4231668b7c8"
+ },
+ "goal": {
+  "type": "custom",
+  "name": "rivalRemoved",
+  "at": 4,
+  "rival": 1
+ },
+ "constraints": {
+  "maxActions": 2
+ },
+ "solution": [
+  {
+   "type": "place",
+   "to": 2
+  },
+  {
+   "type": "remove",
+   "at": 4
+  }
+ ],
+ "par": 2
+}

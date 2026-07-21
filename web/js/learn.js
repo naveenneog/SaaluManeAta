@@ -2,6 +2,8 @@
 // each step narrates one idea (DragonHD), optionally sets a teaching position, and highlights
 // the key spot(s) with the shared coach overlay; the player taps Next to advance. A guided
 // demo, not a strict tutor — robust and soothing. Identical copy per game (like tutorial.js).
+// Card text + buttons are localized via i18n t(); narration passes the English source as the
+// key (audio.js resolves the per-language clip). Bilingual `en` caption stays English.
 //
 //   initLearn({ id, title, accent, steps, hooks }) -> { start, exit, active }
 //   steps: [{ text, en?, position?, highlight?, hint? }]
@@ -12,6 +14,7 @@
 //   hooks: { applyState(state), coach, clearCoach(), narrate(text), freshGame() }
 //     While a lesson runs, document.body carries the `tbg-learning` class so the game can
 //     ignore board input. Exit/Finish clears the coach and calls freshGame() for a fresh play.
+import { t } from './i18n.js';
 const STYLE_ID = 'tbg-learn-styles';
 
 function injectStyles() {
@@ -49,9 +52,9 @@ export function initLearn({ id, title = 'Learn', accent = '#e8c24a', steps = [],
   const btn = document.createElement('button');
   btn.id = 'tbg-learn-btn';
   btn.type = 'button';
-  btn.innerHTML = '🎓 Learn';
-  btn.title = 'Guided lesson — learn how to play';
-  btn.setAttribute('aria-label', 'Learn how to play');
+  btn.textContent = t('🎓 Learn');
+  btn.title = t('Guided lesson — learn how to play');
+  btn.setAttribute('aria-label', t('Learn how to play'));
 
   const card = document.createElement('div');
   card.id = 'tbg-learn-card';
@@ -67,6 +70,7 @@ export function initLearn({ id, title = 'Learn', accent = '#e8c24a', steps = [],
   const mEl = card.querySelector('.m');
   const nextBtn = card.querySelector('#tbg-learn-next');
   const exitBtn = card.querySelector('#tbg-learn-exit');
+  exitBtn.textContent = t('Exit');
 
   let i = -1;
   let active = false;
@@ -74,11 +78,11 @@ export function initLearn({ id, title = 'Learn', accent = '#e8c24a', steps = [],
   function render() {
     const s = steps[i];
     if (!s) return;
-    stepEl.textContent = `${title} · ${i + 1} / ${steps.length}`;
+    stepEl.textContent = `${t(title)} · ${i + 1} / ${steps.length}`;
     enEl.textContent = s.en || '';
     enEl.style.display = s.en ? '' : 'none';
-    mEl.textContent = s.text || '';
-    nextBtn.textContent = i === steps.length - 1 ? 'Finish' : 'Next ›';
+    mEl.textContent = t(s.text || '');
+    nextBtn.textContent = t(i === steps.length - 1 ? 'Finish' : 'Next ›');
     hooks.clearCoach?.();
     if (s.position) hooks.applyState?.(s.position);
     const hl = s.highlight;
@@ -100,7 +104,7 @@ export function initLearn({ id, title = 'Learn', accent = '#e8c24a', steps = [],
     active = true;
     hooks.setLearning?.(true);
     document.body.classList.add('tbg-learning');
-    btn.innerHTML = '✕ Exit lesson';
+    btn.textContent = t('✕ Exit lesson');
     i = 0;
     card.classList.add('show');
     render();
@@ -115,7 +119,7 @@ export function initLearn({ id, title = 'Learn', accent = '#e8c24a', steps = [],
     active = false;
     hooks.setLearning?.(false);
     document.body.classList.remove('tbg-learning');
-    btn.innerHTML = '🎓 Learn';
+    btn.textContent = t('🎓 Learn');
     card.classList.remove('show');
     hooks.clearCoach?.();
     hooks.freshGame?.();

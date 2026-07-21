@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "version": 1,
+  "game": "sma",
+  "achievements": [
+    { "id": "first-match", "titleKey": "sma.achievement.first-match.title", "descKey": "sma.achievement.first-match.desc", "icon": "board-knot", "tier": "bronze", "when": { "type": "counterAtLeast", "counter": "games.played", "atLeast": 1 } },
+    { "id": "first-win", "titleKey": "sma.achievement.first-win.title", "descKey": "sma.achievement.first-win.desc", "icon": "victory-leaf", "tier": "bronze", "when": { "type": "counterAtLeast", "counter": "games.won", "atLeast": 1 } },
+    { "id": "six-puzzles", "titleKey": "sma.achievement.six-puzzles.title", "descKey": "sma.achievement.six-puzzles.desc", "icon": "puzzle-knot", "tier": "silver", "when": { "type": "counterAtLeast", "counter": "puzzles.solved", "atLeast": 6 } },
+    { "id": "first-daily", "titleKey": "sma.achievement.first-daily.title", "descKey": "sma.achievement.first-daily.desc", "icon": "daily-lamp", "tier": "bronze", "when": { "type": "dailyCountAtLeast", "atLeast": 1 } },
+    { "id": "steady-rhythm", "titleKey": "sma.achievement.steady-rhythm.title", "descKey": "sma.achievement.steady-rhythm.desc", "icon": "streak-thread", "tier": "silver", "when": { "type": "streakBestAtLeast", "atLeast": 3 } },
+    { "id": "first-mill", "titleKey": "sma.achievement.first-mill.title", "descKey": "sma.achievement.first-mill.desc", "icon": "mill-wheel", "tier": "bronze", "when": { "type": "logStat", "evaluator": "sma.mills-formed", "atLeast": 1 } },
+    { "id": "mill-master", "titleKey": "sma.achievement.mill-master.title", "descKey": "sma.achievement.mill-master.desc", "icon": "capture-ring", "tier": "silver", "when": { "type": "logStat", "evaluator": "sma.mills-formed", "atLeast": 3 } },
+    { "id": "flying-victory", "titleKey": "sma.achievement.flying-victory.title", "descKey": "sma.achievement.flying-victory.desc", "icon": "flying-stone", "tier": "gold", "when": { "type": "logStat", "evaluator": "sma.flying-win", "atLeast": 1 } },
+    { "id": "the-wall", "titleKey": "sma.achievement.the-wall.title", "descKey": "sma.achievement.the-wall.desc", "icon": "balance-scale", "tier": "gold", "when": { "type": "logStat", "evaluator": "sma.shutout-win", "atLeast": 1 } }
+  ]
+}

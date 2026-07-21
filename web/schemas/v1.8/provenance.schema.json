@@ -1,0 +1,588 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://traditionalboardgames.example/schemas/v1.8/provenance.schema.json",
+  "title": "Traditional Board Games world provenance record",
+  "description": "Claim-level sources, credits, rights, disclosures, and review gates for one interpretive world.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "game",
+    "worldId",
+    "workingTitleKey",
+    "summaryKey",
+    "region",
+    "claims",
+    "sources",
+    "credits",
+    "rights",
+    "disclosures",
+    "review"
+  ],
+  "properties": {
+    "schema": {
+      "const": 1
+    },
+    "id": {
+      "$ref": "#/$defs/contentId"
+    },
+    "game": {
+      "$ref": "#/$defs/game"
+    },
+    "worldId": {
+      "$ref": "#/$defs/shortId"
+    },
+    "workingTitleKey": {
+      "$ref": "#/$defs/contentId"
+    },
+    "summaryKey": {
+      "$ref": "#/$defs/contentId"
+    },
+    "region": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 160
+    },
+    "claims": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "items": {
+        "$ref": "#/$defs/claim"
+      }
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 128,
+      "items": {
+        "$ref": "#/$defs/source"
+      }
+    },
+    "credits": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "$ref": "#/$defs/credit"
+      }
+    },
+    "rights": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1024,
+      "items": {
+        "$ref": "#/$defs/right"
+      }
+    },
+    "disclosures": {
+      "$ref": "#/$defs/disclosures"
+    },
+    "review": {
+      "$ref": "#/$defs/review"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "review": {
+            "properties": {
+              "status": {
+                "const": "approved"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "rights": {
+            "items": {
+              "properties": {
+                "allowedUse": {
+                  "enum": [
+                    "project-original",
+                    "licensed-redistribution",
+                    "public-domain",
+                    "permission-recorded"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "game": {
+      "enum": [
+        "ah",
+        "am",
+        "cb",
+        "sma"
+      ]
+    },
+    "shortId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{0,63}$"
+    },
+    "contentId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z0-9][a-z0-9_-]*){2,}$",
+      "maxLength": 160
+    },
+    "assetPath": {
+      "type": "string",
+      "pattern": "^assets/(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//)[A-Za-z0-9][A-Za-z0-9._/-]{0,254}$",
+      "maxLength": 256
+    },
+    "httpsUrl": {
+      "type": "string",
+      "pattern": "^https://[^\\s]+$",
+      "format": "uri",
+      "maxLength": 1024
+    },
+    "date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "format": "date"
+    },
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "label",
+        "textKey",
+        "sourceIds"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/shortId"
+        },
+        "label": {
+          "enum": [
+            "documented",
+            "probable",
+            "interpretive"
+          ]
+        },
+        "textKey": {
+          "$ref": "#/$defs/contentId"
+        },
+        "sourceIds": {
+          "type": "array",
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/shortId"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "label": {
+                "const": "documented"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "sourceIds": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "label": {
+                "const": "probable"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "sourceIds": {
+                "minItems": 2
+              }
+            }
+          }
+        }
+      ]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "title",
+        "publisher",
+        "url",
+        "accessed",
+        "language",
+        "notesKey"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/shortId"
+        },
+        "type": {
+          "enum": [
+            "government",
+            "academic",
+            "museum",
+            "community",
+            "artisan",
+            "interview",
+            "book",
+            "archive",
+            "other"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "publisher": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "url": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/httpsUrl"
+            }
+          ]
+        },
+        "archiveUrl": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/httpsUrl"
+            }
+          ]
+        },
+        "accessed": {
+          "$ref": "#/$defs/date"
+        },
+        "language": {
+          "enum": [
+            "kn",
+            "en",
+            "hi",
+            "ta",
+            "te",
+            "ml",
+            "mr",
+            "other"
+          ]
+        },
+        "notesKey": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/contentId"
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "not": {
+                  "const": "interview"
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "url": {
+                "$ref": "#/$defs/httpsUrl"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "credit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role",
+        "name",
+        "creditLine",
+        "url"
+      ],
+      "properties": {
+        "role": {
+          "enum": [
+            "research",
+            "cultural-review",
+            "artisan-review",
+            "native-language-review",
+            "translation",
+            "visual-art",
+            "audio",
+            "photography",
+            "software",
+            "other"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "creditLine": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "url": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/httpsUrl"
+            }
+          ]
+        }
+      }
+    },
+    "right": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "assetPath",
+        "sourceId",
+        "holder",
+        "licenseId",
+        "licenseUrl",
+        "allowedUse",
+        "attributionKey",
+        "synthetic"
+      ],
+      "properties": {
+        "assetPath": {
+          "$ref": "#/$defs/assetPath"
+        },
+        "sourceId": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/shortId"
+            }
+          ]
+        },
+        "holder": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "licenseId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9.+_-]{0,63}$",
+          "maxLength": 64
+        },
+        "licenseUrl": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/httpsUrl"
+            }
+          ]
+        },
+        "allowedUse": {
+          "enum": [
+            "project-original",
+            "licensed-redistribution",
+            "public-domain",
+            "permission-recorded",
+            "internal-review-only"
+          ]
+        },
+        "attributionKey": {
+          "$ref": "#/$defs/contentId"
+        },
+        "synthetic": {
+          "type": "boolean"
+        }
+      }
+    },
+    "disclosures": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "interpretiveWorld",
+        "historicalGameAssociation",
+        "aiAssistedVisuals",
+        "syntheticAudio",
+        "livingTradition",
+        "disclosureKeys"
+      ],
+      "properties": {
+        "interpretiveWorld": {
+          "const": true
+        },
+        "historicalGameAssociation": {
+          "enum": [
+            "documented",
+            "probable",
+            "not-claimed"
+          ]
+        },
+        "aiAssistedVisuals": {
+          "type": "boolean"
+        },
+        "syntheticAudio": {
+          "type": "boolean"
+        },
+        "livingTradition": {
+          "type": "boolean"
+        },
+        "disclosureKeys": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/contentId"
+          }
+        }
+      }
+    },
+    "reviewer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "role",
+        "reviewedAt"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "role": {
+          "enum": [
+            "owner",
+            "research",
+            "cultural",
+            "artisan",
+            "native-language",
+            "rights"
+          ]
+        },
+        "reviewedAt": {
+          "$ref": "#/$defs/date"
+        }
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "reviewers",
+        "nativeKannadaReviewed",
+        "culturalReviewed",
+        "rightsReviewed",
+        "approvedForPackaging",
+        "notes"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "pending",
+            "changes-requested",
+            "approved",
+            "rejected"
+          ]
+        },
+        "reviewers": {
+          "type": "array",
+          "maxItems": 32,
+          "items": {
+            "$ref": "#/$defs/reviewer"
+          }
+        },
+        "nativeKannadaReviewed": {
+          "type": "boolean"
+        },
+        "culturalReviewed": {
+          "type": "boolean"
+        },
+        "rightsReviewed": {
+          "type": "boolean"
+        },
+        "approvedForPackaging": {
+          "type": "boolean"
+        },
+        "notes": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "type": "string",
+            "maxLength": 500
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "approved"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "reviewers": {
+                "minItems": 1
+              },
+              "nativeKannadaReviewed": {
+                "const": true
+              },
+              "culturalReviewed": {
+                "const": true
+              },
+              "rightsReviewed": {
+                "const": true
+              },
+              "approvedForPackaging": {
+                "const": true
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

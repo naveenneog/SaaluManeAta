@@ -1,0 +1,88 @@
+{
+ "schema": 1,
+ "id": "sma-h1-mill-to-win",
+ "game": "sma",
+ "world": "saalu",
+ "engine": {
+  "version": "1.5.0"
+ },
+ "ruleset": {
+  "id": "sma.base",
+  "version": 1
+ },
+ "rng": {
+  "algorithm": "xoshiro128ss-v1",
+  "seed": "sma-h1-mill-to-win"
+ },
+ "titleKey": "sma.puzzle.h1-mill-to-win.title",
+ "briefKey": "sma.puzzle.h1-mill-to-win.brief",
+ "hintKeys": [
+  "sma.puzzle.h1-mill-to-win.hint.1",
+  "sma.puzzle.h1-mill-to-win.hint.2"
+ ],
+ "difficulty": "hard",
+ "position": {
+  "kind": "state",
+  "state": {
+   "points": [
+    0,
+    0,
+    null,
+    null,
+    null,
+    1,
+    null,
+    null,
+    null,
+    0,
+    null,
+    null,
+    null,
+    1,
+    0,
+    null,
+    null,
+    null,
+    null,
+    1,
+    null,
+    null,
+    null,
+    null
+   ],
+   "turn": 0,
+   "toPlace": [
+    0,
+    0
+   ],
+   "onBoard": [
+    4,
+    3
+   ],
+   "removePending": false,
+   "winner": null,
+   "lastMill": null,
+   "event": null
+  },
+  "stateHash": "2512f550079eebad"
+ },
+ "goal": {
+  "type": "winnerIs",
+  "side": 0
+ },
+ "constraints": {
+  "maxActions": 2
+ },
+ "solution": [
+  {
+   "type": "move",
+   "from": 14,
+   "to": 2
+  },
+  {
+   "type": "remove",
+   "at": 5
+  }
+ ],
+ "par": 2
+}

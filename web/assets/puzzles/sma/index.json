@@ -1,0 +1,36 @@
+{
+ "game": "sma",
+ "version": "1.6.0",
+ "puzzles": [
+  {
+   "id": "sma-e1-first-mill",
+   "difficulty": "easy",
+   "titleKey": "sma.puzzle.e1-first-mill.title"
+  },
+  {
+   "id": "sma-e2-slide-to-mill",
+   "difficulty": "easy",
+   "titleKey": "sma.puzzle.e2-slide-to-mill.title"
+  },
+  {
+   "id": "sma-m1-take-the-threat",
+   "difficulty": "medium",
+   "titleKey": "sma.puzzle.m1-take-the-threat.title"
+  },
+  {
+   "id": "sma-m2-open-and-take",
+   "difficulty": "medium",
+   "titleKey": "sma.puzzle.m2-open-and-take.title"
+  },
+  {
+   "id": "sma-h1-mill-to-win",
+   "difficulty": "hard",
+   "titleKey": "sma.puzzle.h1-mill-to-win.title"
+  },
+  {
+   "id": "sma-h2-fly-to-win",
+   "difficulty": "hard",
+   "titleKey": "sma.puzzle.h2-fly-to-win.title"
+  }
+ ]
+}

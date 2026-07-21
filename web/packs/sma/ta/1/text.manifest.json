@@ -1,0 +1,49 @@
+{
+  "format": "tbg-language-pack",
+  "schema": 1,
+  "game": "sma",
+  "language": "ta",
+  "version": "1.8.0-alpha.1",
+  "contentVersion": 1,
+  "component": "text",
+  "fallbackLanguage": "en",
+  "bytes": 53641,
+  "sha256": "ae7eb375c6054b51c45ce96121dbd46cb71473faff526b89b0a68bed285b27fc",
+  "files": [
+    {
+      "path": "packs/sma/ta/1/ui.json",
+      "role": "ui",
+      "mediaType": "application/json",
+      "bytes": 31495,
+      "sha256": "e4b9d407b3435a3c0dd148a021b34c8d9c07c35301e800095ca72382e41df532"
+    },
+    {
+      "path": "packs/sma/ta/1/world-angadi.json",
+      "role": "world",
+      "mediaType": "application/json",
+      "bytes": 5873,
+      "sha256": "f2c52c9509e8c149d8abb03a840a9fb0868b3ee59e146f03d127ee7925c0f497"
+    },
+    {
+      "path": "packs/sma/ta/1/world-navagraha.json",
+      "role": "world",
+      "mediaType": "application/json",
+      "bytes": 5489,
+      "sha256": "bb99f8e410893d64fb21083069766e3cf0b5d94b46932eca4bd41c2d453d0b80"
+    },
+    {
+      "path": "packs/sma/ta/1/world-parampare.json",
+      "role": "world",
+      "mediaType": "application/json",
+      "bytes": 5316,
+      "sha256": "0cd29eec6f109ded1d2fb816d02c8de6d4834a8323c6473acebfc9ddd1bac9d6"
+    },
+    {
+      "path": "packs/sma/ta/1/world-saalu.json",
+      "role": "world",
+      "mediaType": "application/json",
+      "bytes": 5468,
+      "sha256": "f9e803cadf18f810568aebb2b38e94c833dd641edae4162f7a9a85e7f0dcca08"
+    }
+  ]
+}

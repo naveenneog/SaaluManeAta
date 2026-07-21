@@ -1,5 +1,15 @@
 let ctx = null, master = null, bed = null, bedGain = null, bedBase = 0, legacyMuted = false, unlocked = false;
-let worldId = null, currentClip = null, lang = 'en';
+let worldId = null, currentClip = null, currentClipUrl = null, lang = 'en';
+let narrationGen = 0;
+// Idempotent narration cleanup: pause the current clip and reclaim its blob URL (if any). Safe to call on
+// replacement, mute, ended/error, or a failed play() — every path routes through here so a blob URL is
+// never leaked.
+function stopCurrentClip() {
+  if (currentClip) { try { currentClip.pause(); } catch { /* already stopped */ } }
+  if (currentClipUrl) { try { URL.revokeObjectURL(currentClipUrl); } catch { /* already revoked */ } }
+  currentClip = null;
+  currentClipUrl = null;
+}
 export function setLang(l) { lang = l || 'en'; }
 const levels = {
   music: { volume: 1, muted: false },
@@ -25,7 +35,8 @@ function updateLiveLevels() {
   }
   if (currentClip) currentClip.volume = outputLevel('narration');
   if (!outputLevel('narration')) {
-    currentClip?.pause();
+    narrationGen += 1;                 // supersede any in-flight narration lookup so it can't play post-mute
+    stopCurrentClip();
     try { window.speechSynthesis?.cancel(); } catch { /* unavailable */ }
   }
 }
@@ -123,6 +134,23 @@ async function startBed() {
 }
 
 const voiceMaps = {};
+// v1.8 α1: optional installed voice packs. When set, narrate() tries the active language's installed
+// voice pack (served from CacheStorage via packs.getVoiceFile) BEFORE the bundled assets — this is what
+// lets a lean default-core play optional-language narration it doesn't ship. Unset = bundled assets only.
+let voiceSource = null;
+export function setVoiceSource(fn) { voiceSource = typeof fn === 'function' ? fn : null; }
+async function playResponse(resp, volume, gen) {
+  const blob = await resp.blob();
+  if (gen !== narrationGen) return;              // a newer narrate() superseded this lookup — drop it
+  stopCurrentClip();
+  const url = URL.createObjectURL(blob);
+  const clip = new Audio(url); clip.volume = volume;
+  currentClip = clip; currentClipUrl = url;
+  const done = () => { if (currentClip === clip) stopCurrentClip(); else { try { URL.revokeObjectURL(url); } catch { /* already revoked */ } } };
+  clip.addEventListener('ended', done, { once: true });
+  clip.addEventListener('error', done, { once: true });
+  try { await clip.play(); } catch { done(); }
+}
 const voiceBase = (wid) => (lang === 'en' ? `assets/${wid}/voice` : `assets/${wid}/voice/${lang}`);
 async function loadVoiceMap(wid) {
   if (!wid) return {};
@@ -133,24 +161,52 @@ async function loadVoiceMap(wid) {
   return voiceMaps[key];
 }
 
+// Game-level UI narration (tutorial / Learn steps): assets/ui/voice[/<lang>]/voice.json.
+const uiVoiceMaps = {};
+const uiVoiceBase = () => (lang === 'en' ? 'assets/ui/voice' : `assets/ui/voice/${lang}`);
+async function loadUIVoiceMap() {
+  if (uiVoiceMaps[lang]) return uiVoiceMaps[lang];
+  try { const r = await fetch(`${uiVoiceBase()}/voice.json`); uiVoiceMaps[lang] = r.ok ? await r.json() : {}; }
+  catch { uiVoiceMaps[lang] = {}; }
+  return uiVoiceMaps[lang];
+}
+
+const SPEECH_LOCALE = { en: 'en-IN', kn: 'kn-IN', hi: 'hi-IN', ta: 'ta-IN', te: 'te-IN', ml: 'ml-IN', mr: 'mr-IN' };
+
 export async function narrate(text, world) {
+  const gen = ++narrationGen;                    // bump first: even a muted/empty call supersedes older lookups
   const volume = outputLevel('narration');
   if (!volume || !text) return;
   const wid = (world && world.id) || worldId;
+  // 0) installed voice pack (default-core / on-demand): try the world scope then the ui scope.
+  if (voiceSource) {
+    for (const scope of [wid, 'ui']) {
+      if (!scope) continue;
+      try {
+        const resp = await voiceSource(lang, text, scope);
+        if (gen !== narrationGen) return;
+        if (resp) { await playResponse(resp, volume, gen); return; }
+      } catch { /* fall through to bundled assets */ }
+    }
+  }
+  // 1) per-world teaching clip, then 2) game-level UI clip (tutorial / Learn).
   const map = await loadVoiceMap(wid);
-  const file = map[text];
+  if (gen !== narrationGen) return;
+  let file = map[text], base = voiceBase(wid);
+  if (!file) { const um = await loadUIVoiceMap(); if (gen !== narrationGen) return; if (um[text]) { file = um[text]; base = uiVoiceBase(); } }
   if (file) {
     try {
-      currentClip?.pause();
-      const clip = new Audio(`${voiceBase(wid)}/${file}`); clip.volume = volume; currentClip = clip;
+      stopCurrentClip();
+      const clip = new Audio(`${base}/${file}`); clip.volume = volume; currentClip = clip; currentClipUrl = null;
       await clip.play(); return;
     } catch { /* use Web Speech */ }
   }
+  // 3) Web Speech fallback — use the current language's locale for correct pronunciation.
   if (!('speechSynthesis' in window)) return;
   try {
     speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = (world && world.voice && world.voice.web) || 'en-IN';
+    utterance.lang = SPEECH_LOCALE[lang] || (world && world.voice && world.voice.web) || 'en-IN';
     utterance.rate = 0.98; utterance.pitch = 1; utterance.volume = volume;
     speechSynthesis.speak(utterance);
   } catch { /* narration is optional */ }

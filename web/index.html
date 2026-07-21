@@ -20,23 +20,18 @@
       <img class="hero-img" src="assets/brand/hero.png" alt="Saalu Mane Ata — nine men's morris" />
       <div class="kn">ಸಾಲು ಮನೆ ಆಟ</div>
       <h1>Saalu Mane Ata</h1>
-      <p>The ancient nine-pebble alignment game — Navakankari — reborn in glowing 3D. Three nested squares,
-        nine seeds each; line up three and break one. <b>No dice. Only foresight.</b></p>
+      <p><span data-i18n>The ancient nine-pebble alignment game — Navakankari — reborn in glowing 3D. Three nested squares, nine seeds each; line up three and break one.</span> <b data-i18n>No dice. Only foresight.</b></p>
       <div class="cta">
-        <a class="primary" href="setup.html">Play now →</a>
-        <a class="ghost" href="https://github.com/naveenneog/SaaluManeAta/releases/latest/download/SaaluManeAta.apk">Android APK</a>
+        <a class="primary" href="setup.html" data-i18n>Play now →</a>
+        <a class="ghost" href="https://github.com/naveenneog/SaaluManeAta/releases/latest/download/SaaluManeAta.apk" data-i18n>Android APK</a>
       </div>
     </div>
     <div class="feat">
-      <div class="f"><b>Pure strategy, preserved</b><p>No randomiser — place, move, and once down to three, fly.
-        Mills form only on connected straight lines; never a diagonal false-mill.</p></div>
-      <div class="f"><b>Three worlds, one board</b><p>The village <i>Saalu Mane</i>, a merchant <i>Angadi</i>,
-        and the cosmic <i>Navagraha</i> — each re-reads alignment as foresight, market power, or cosmic order.</p></div>
-      <div class="f"><b>Glowing 3D &amp; a real opponent</b><p>Bloom-lit carved stones, mobile-first touch, and a
-        minimax AI that sees several moves ahead.</p></div>
+      <div class="f"><b data-i18n>Pure strategy, preserved</b><p data-i18n>No randomiser — place, move, and once down to three, fly. Mills form only on connected straight lines; never a diagonal false-mill.</p></div>
+      <div class="f"><b data-i18n>Three worlds, one board</b><p data-i18n>The village <i>Saalu Mane</i>, a merchant <i>Angadi</i>, and the cosmic <i>Navagraha</i> — each re-reads alignment as foresight, market power, or cosmic order.</p></div>
+      <div class="f"><b data-i18n>Glowing 3D &amp; a real opponent</b><p data-i18n>Bloom-lit carved stones, mobile-first touch, and a minimax AI that sees several moves ahead.</p></div>
     </div>
-    <p class="foot">Part of <a href="../index.html">Traditional Board Games</a> · reconstructed with original intent ·
-      built with GitHub Copilot CLI</p>
+    <p class="foot"><span data-i18n>Part of</span> <a href="../index.html" data-i18n>Traditional Board Games</a> · <span data-i18n>reconstructed with original intent</span> · <span data-i18n>built with GitHub Copilot CLI</span></p>
   </div>
   <script>
     (function () { var img = document.querySelector('.hero-img'); if (!img) return;
@@ -44,6 +39,15 @@
         var v = document.createElement('video'); v.className = 'hero-img'; v.src = 'assets/brand/intro.mp4';
         v.poster = img.getAttribute('src'); v.autoplay = v.loop = v.muted = v.playsInline = true;
         v.setAttribute('playsinline', ''); v.setAttribute('muted', ''); img.replaceWith(v); }).catch(function () {}); })();
+  </script>
+  <script type="module">
+    import { setLang, savedLang, loadUII18n, localizeUI, t } from './js/i18n.js';
+    const lang = savedLang('sma');
+    setLang(lang);
+    document.documentElement.lang = lang;
+    await loadUII18n('sma');
+    localizeUI();
+    document.title = t('Saalu Mane Ata — nine men\'s morris, reborn in 3D');
   </script>
 </body>
 </html>

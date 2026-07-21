@@ -1,0 +1,83 @@
+{
+ "schema": 1,
+ "id": "sma-e1-first-mill",
+ "game": "sma",
+ "world": "saalu",
+ "engine": {
+  "version": "1.5.0"
+ },
+ "ruleset": {
+  "id": "sma.base",
+  "version": 1
+ },
+ "rng": {
+  "algorithm": "xoshiro128ss-v1",
+  "seed": "sma-e1-first-mill"
+ },
+ "titleKey": "sma.puzzle.e1-first-mill.title",
+ "briefKey": "sma.puzzle.e1-first-mill.brief",
+ "hintKeys": [
+  "sma.puzzle.e1-first-mill.hint.1",
+  "sma.puzzle.e1-first-mill.hint.2"
+ ],
+ "difficulty": "easy",
+ "position": {
+  "kind": "state",
+  "state": {
+   "points": [
+    0,
+    0,
+    null,
+    null,
+    null,
+    1,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    1,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+   ],
+   "turn": 0,
+   "toPlace": [
+    7,
+    7
+   ],
+   "onBoard": [
+    2,
+    2
+   ],
+   "removePending": false,
+   "winner": null,
+   "lastMill": null,
+   "event": null
+  },
+  "stateHash": "a5de1cba6e4af989"
+ },
+ "goal": {
+  "type": "flag",
+  "path": "removePending"
+ },
+ "constraints": {
+  "maxActions": 1
+ },
+ "solution": [
+  {
+   "type": "place",
+   "to": 2
+  }
+ ],
+ "par": 1
+}

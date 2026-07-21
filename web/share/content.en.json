@@ -1,0 +1,10 @@
+{
+  "sma.share.result.win.title": "The mills hold at Saalu Mane Ata",
+  "sma.share.result.win.body": "Ground the rival down in {moves} moves.",
+  "sma.share.result.loss.title": "Outwitted at Saalu Mane Ata",
+  "sma.share.result.loss.body": "The rival's lines closed the board.",
+  "sma.share.result.draw.title": "A drawn Saalu Mane Ata",
+  "sma.share.result.draw.body": "Neither side could break the other's mills.",
+  "sma.share.puzzle.title": "Saalu Mane Ata puzzle solved",
+  "sma.share.puzzle.body": "Read the lines and solved it in {moves} moves."
+}

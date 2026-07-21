@@ -1,0 +1,12 @@
+{
+ "See three moves ahead: a row you fail to complete is a row your rival completes.": "మూడు అడుగులు ముందే చూడాలి: మీరు పూర్తి చేయని వరుసను, మీ ప్రత్యర్థి పూర్తి చేస్తాడు.",
+ "Nine seeds each, three nested squares. Whoever lines up three in a connected row breaks one of the other's seeds. Plan the row before you place the seed.": "తొమ్మిది గింజలు, మూడు ముడుచుకున్న చతురస్రాలు. ఎవరు కలిసిన వరుసలో మూడు గింజలను సరిచేసితే, వారు ప్రత్యర్థి గింజల్లో ఒకదాన్ని పగులగొడతారు. గింజ పెట్టే ముందు వరుసను ముందే ఊహించుకో.",
+ "The old players called it a game of foresight — you do not win by the move you make, but by the two moves you have already seen.": "పాత ఆటగాళ్లు దీన్ని ముందుచూపు ఆట అని పిలిచేవారు — మీరు వేసే అడుగుతో కాదు, మీరు ముందే చూసిన రెండు అడుగులతో మీరు గెలుస్తారు.",
+ "Three in a line — a mill. Alignment is the whole game: what you line up, you get to break.": "మూడు గింజలు ఒక సూటి వరుసలో — అదే మిల్. సరిచేయడం మొత్తం ఆట: మీరు ఏది వరుసలో పెట్టగలిగితే, దానితోనే మీరు పగులగొడతారు.",
+ "A row completed. Notice you built it from an intersection that fed two lines at once — that is foresight, not luck.": "ఒక వరుస పూర్తైంది. గమనించు, నువ్వది రెండు దారులను కలిపే కూడలిలోంచి నిర్మించావు — అది ముందుచూపు, అదృష్టం కాదు.",
+ "The mill forms. A good player opens two threats so the block of one completes the other.": "మిల్ ఏర్పడింది. మంచి ఆటగాడు రెండు బెదిరింపులను ఒకేసారి తెరుస్తాడు; ఒకదాన్ని అడ్డుకుంటే, మరొకటి పూర్తవుతుంది.",
+ "You take an enemy seed — but never one already inside a mill, unless every enemy seed is. Choose the seed that would have hurt you most.": "నువ్వు శత్రువు గింజను తీసుకుంటావు — కానీ ఇప్పటికే మిల్‌లో ఉన్న గింజను ఎప్పుడూ తీయకూడదు, అన్ని శత్రు గింజలూ మిల్‌లలో ఉన్నప్పుడే తప్ప. నీకు ఎక్కువ నష్టం చేసేదాన్ని ఎంచుకో.",
+ "One seed removed. Take the piece that guards a junction; cripple the network, not just the number.": "ఒక గింజ తొలగించబడింది. కూడలిని కాపాడే గింజనే తీసుకో; సంఖ్యను కాదు, వారి బలమైన జాలాన్ని బలహీనపరచు.",
+ "The rival is down to two seeds and can form no line. Foresight, patiently applied, has won the board.": "ప్రత్యర్థి రెండు గింజలకే తగ్గిపోయాడు, ఇక వరుసను చేయలేడు. సహనంతో నడిపిన ముందుచూపు బోర్డును గెలిపించింది.",
+ "Reduced to two, you can no longer make a row. The player who saw further took the board.": "రెండుకే తగ్గిపోయినప్పుడు, నువ్వు ఇక వరుసను చేయలేవు. ఎక్కువ దూరం చూసిన ఆటగాడు బోర్డును తనదిగా చేసుకున్నాడు."
+}

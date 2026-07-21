@@ -1,0 +1,542 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://traditionalboardgames.example/schemas/v1.8/world-v2.schema.json",
+  "title": "Traditional Board Games world manifest v2",
+  "description": "A visual, audio, content, and provenance manifest. Rules are external and may only be referenced through exact compatibility declarations.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "game",
+    "titleKey",
+    "kannadaTitleKey",
+    "realistic",
+    "rulesetCompatibility",
+    "render",
+    "audio",
+    "content",
+    "campaignIds",
+    "assetManifest",
+    "cinematicManifest"
+  ],
+  "properties": {
+    "schema": {
+      "const": 2
+    },
+    "id": {
+      "$ref": "#/$defs/shortId"
+    },
+    "game": {
+      "$ref": "#/$defs/game"
+    },
+    "titleKey": {
+      "$ref": "#/$defs/contentId"
+    },
+    "kannadaTitleKey": {
+      "$ref": "#/$defs/contentId"
+    },
+    "realistic": {
+      "type": "boolean"
+    },
+    "rulesetCompatibility": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 16,
+      "items": {
+        "$ref": "#/$defs/ruleset"
+      }
+    },
+    "render": {
+      "$ref": "#/$defs/render"
+    },
+    "audio": {
+      "$ref": "#/$defs/audio"
+    },
+    "content": {
+      "$ref": "#/$defs/content"
+    },
+    "campaignIds": {
+      "type": "array",
+      "maxItems": 8,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/campaignId"
+      }
+    },
+    "assetManifest": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/assetPath"
+        },
+        {
+          "pattern": "(?:^|/)assets\\.manifest\\.json$"
+        }
+      ]
+    },
+    "cinematicManifest": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/assetPath"
+            },
+            {
+              "pattern": "\\.manifest\\.json$"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "game": {
+      "enum": [
+        "ah",
+        "am",
+        "cb",
+        "sma"
+      ]
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 2147483647
+    },
+    "shortId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{0,63}$"
+    },
+    "campaignId": {
+      "type": "string",
+      "pattern": "^(?:ah|am|cb|sma)\\.[a-z][a-z0-9-]{0,63}$",
+      "maxLength": 68
+    },
+    "contentId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z0-9][a-z0-9_-]*){2,}$",
+      "maxLength": 160
+    },
+    "assetPath": {
+      "type": "string",
+      "pattern": "^assets/(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//)[A-Za-z0-9][A-Za-z0-9._/-]{0,254}$",
+      "maxLength": 256
+    },
+    "color": {
+      "type": "string",
+      "pattern": "^#[0-9a-fA-F]{6}$"
+    },
+    "finiteUnit": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "ruleset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^(?:ah|am|cb|sma)\\.[a-z][a-z0-9-]{0,63}$",
+          "maxLength": 68
+        },
+        "version": {
+          "$ref": "#/$defs/version"
+        }
+      }
+    },
+    "paletteEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role",
+        "color"
+      ],
+      "properties": {
+        "role": {
+          "enum": [
+            "background",
+            "surface",
+            "board",
+            "line",
+            "node",
+            "accent",
+            "highlight",
+            "danger",
+            "piece-0",
+            "piece-1",
+            "piece-2",
+            "piece-3",
+            "text",
+            "text-muted"
+          ]
+        },
+        "color": {
+          "$ref": "#/$defs/color"
+        }
+      }
+    },
+    "material": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role",
+        "baseColor",
+        "roughness",
+        "metalness",
+        "emissive",
+        "emissiveIntensity",
+        "environmentIntensity"
+      ],
+      "properties": {
+        "role": {
+          "enum": [
+            "board",
+            "line",
+            "node",
+            "piece-0",
+            "piece-1",
+            "piece-2",
+            "piece-3",
+            "seed",
+            "cowrie",
+            "table",
+            "floor"
+          ]
+        },
+        "baseColor": {
+          "$ref": "#/$defs/color"
+        },
+        "roughness": {
+          "$ref": "#/$defs/finiteUnit"
+        },
+        "metalness": {
+          "$ref": "#/$defs/finiteUnit"
+        },
+        "emissive": {
+          "$ref": "#/$defs/color"
+        },
+        "emissiveIntensity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 4
+        },
+        "environmentIntensity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 4
+        }
+      }
+    },
+    "light": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "color",
+        "intensity"
+      ],
+      "properties": {
+        "color": {
+          "$ref": "#/$defs/color"
+        },
+        "intensity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 12
+        }
+      }
+    },
+    "heroLight": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "color",
+        "intensity",
+        "angle",
+        "penumbra"
+      ],
+      "properties": {
+        "color": {
+          "$ref": "#/$defs/color"
+        },
+        "intensity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 12
+        },
+        "angle": {
+          "type": "number",
+          "minimum": 0.1,
+          "maximum": 1.5
+        },
+        "penumbra": {
+          "$ref": "#/$defs/finiteUnit"
+        }
+      }
+    },
+    "lighting": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ambient",
+        "key",
+        "rim",
+        "hero"
+      ],
+      "properties": {
+        "ambient": {
+          "$ref": "#/$defs/light"
+        },
+        "key": {
+          "$ref": "#/$defs/light"
+        },
+        "rim": {
+          "$ref": "#/$defs/light"
+        },
+        "hero": {
+          "$ref": "#/$defs/heroLight"
+        }
+      }
+    },
+    "renderLimits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "desktopParticles",
+        "mobileParticles",
+        "maxPixelRatio",
+        "maxShadowMap"
+      ],
+      "properties": {
+        "desktopParticles": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 256
+        },
+        "mobileParticles": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 64
+        },
+        "maxPixelRatio": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 2
+        },
+        "maxShadowMap": {
+          "enum": [
+            0,
+            512,
+            1024,
+            2048
+          ]
+        }
+      }
+    },
+    "render": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "boardTexture",
+        "environment",
+        "poster",
+        "pieceStyle",
+        "cameraMood",
+        "bloom",
+        "accessibilityPalette",
+        "palette",
+        "materials",
+        "lighting",
+        "limits"
+      ],
+      "properties": {
+        "boardTexture": {
+          "$ref": "#/$defs/assetPath"
+        },
+        "environment": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/assetPath"
+            }
+          ]
+        },
+        "poster": {
+          "$ref": "#/$defs/assetPath"
+        },
+        "pieceStyle": {
+          "enum": [
+            "procedural",
+            "carved-wood",
+            "polished-metal",
+            "stone",
+            "seeds",
+            "mixed"
+          ]
+        },
+        "cameraMood": {
+          "enum": [
+            "heritage-calm",
+            "rain-calm",
+            "courtyard-warm",
+            "road-journey",
+            "night-metal",
+            "forest-mist",
+            "festival-soft",
+            "moonlit"
+          ]
+        },
+        "bloom": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1.25
+        },
+        "accessibilityPalette": {
+          "$ref": "#/$defs/shortId"
+        },
+        "palette": {
+          "type": "array",
+          "minItems": 6,
+          "maxItems": 14,
+          "items": {
+            "$ref": "#/$defs/paletteEntry"
+          }
+        },
+        "materials": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16,
+          "items": {
+            "$ref": "#/$defs/material"
+          }
+        },
+        "lighting": {
+          "$ref": "#/$defs/lighting"
+        },
+        "limits": {
+          "$ref": "#/$defs/renderLimits"
+        }
+      }
+    },
+    "audioTrack": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "mime",
+        "gain",
+        "loopStartMs",
+        "loopEndMs",
+        "fadeMs",
+        "duckUnderNarration"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/assetPath"
+        },
+        "mime": {
+          "enum": [
+            "audio/webm",
+            "audio/ogg",
+            "audio/mpeg"
+          ]
+        },
+        "gain": {
+          "$ref": "#/$defs/finiteUnit"
+        },
+        "loopStartMs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 600000
+        },
+        "loopEndMs": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 600000
+        },
+        "fadeMs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "duckUnderNarration": {
+          "$ref": "#/$defs/finiteUnit"
+        }
+      }
+    },
+    "audio": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "music",
+        "ambience"
+      ],
+      "properties": {
+        "music": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/audioTrack"
+            }
+          ]
+        },
+        "ambience": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/audioTrack"
+            }
+          ]
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "teachingIds",
+        "glossaryIds",
+        "provenanceId",
+        "aboutSummaryKey"
+      ],
+      "properties": {
+        "teachingIds": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/contentId"
+          }
+        },
+        "glossaryIds": {
+          "type": "array",
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/contentId"
+          }
+        },
+        "provenanceId": {
+          "$ref": "#/$defs/contentId"
+        },
+        "aboutSummaryKey": {
+          "$ref": "#/$defs/contentId"
+        }
+      }
+    }
+  }
+}

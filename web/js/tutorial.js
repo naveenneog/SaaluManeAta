@@ -1,7 +1,9 @@
 // Reusable "How to play" tutorial + help button. Framework-free: injects its own
 // styles and DOM. Each game calls initTutorial({ key, title, accent, steps }).
 // steps: [{ icon, title, text }]. Auto-opens once per player (localStorage key),
-// and is reachable any time via a floating "?" button.
+// and is reachable any time via a floating "?" button. Rendered text is localized
+// through i18n t() (English source is the key). Identical copy per game.
+import { t } from './i18n.js';
 let injected = false;
 function injectStyles(accent) {
   if (injected) return; injected = true;
@@ -34,7 +36,7 @@ function injectStyles(accent) {
   const s = document.createElement('style'); s.textContent = css; document.head.appendChild(s);
 }
 
-export function initTutorial({ key, title, accent = '#8bd', steps = [], helpButton = true }) {
+export function initTutorial({ key, title, accent = '#8bd', steps = [], helpButton = true, autoOpen = true }) {
   injectStyles();
   document.documentElement.style.setProperty('--tut-accent', accent);
   const scrim = document.createElement('div'); scrim.id = 'tut-scrim';
@@ -47,13 +49,14 @@ export function initTutorial({ key, title, accent = '#8bd', steps = [], helpButt
   const els = { icon: scrim.querySelector('.tut-icon'), h: scrim.querySelector('h3'), p: scrim.querySelector('p'),
     dots: scrim.querySelector('#tut-dots'), skip: scrim.querySelector('#tut-skip'), back: scrim.querySelector('#tut-back'), next: scrim.querySelector('#tut-next') };
   els.dots.innerHTML = steps.map(() => '<i></i>').join('');
+  els.skip.textContent = t('Skip'); els.back.textContent = t('Back');
   let i = 0;
   function render() {
     const s = steps[i];
-    els.icon.textContent = s.icon || '📜'; els.h.textContent = s.title || title; els.p.textContent = s.text;
+    els.icon.textContent = s.icon || '📜'; els.h.textContent = t(s.title || title); els.p.textContent = t(s.text);
     [...els.dots.children].forEach((d, k) => d.classList.toggle('on', k === i));
     els.back.style.display = i > 0 ? '' : 'none';
-    els.next.textContent = i === steps.length - 1 ? 'Got it' : 'Next';
+    els.next.textContent = t(i === steps.length - 1 ? 'Got it' : 'Next');
   }
   function open() { i = 0; render(); scrim.classList.add('show'); }
   function close() { scrim.classList.remove('show'); try { localStorage.setItem(key, '1'); } catch { /* */ } }
@@ -64,11 +67,11 @@ export function initTutorial({ key, title, accent = '#8bd', steps = [], helpButt
   addEventListener('keydown', (e) => { if (!scrim.classList.contains('show')) return; if (e.key === 'Escape') close(); else if (e.key === 'ArrowRight' || e.key === 'Enter') els.next.click(); else if (e.key === 'ArrowLeft') els.back.click(); });
 
   if (helpButton) {
-    const btn = document.createElement('button'); btn.id = 'tut-help'; btn.textContent = '?'; btn.title = 'How to play';
-    btn.setAttribute('aria-label', 'How to play'); btn.onclick = open; document.body.appendChild(btn);
+    const btn = document.createElement('button'); btn.id = 'tut-help'; btn.textContent = '?'; btn.title = t('How to play');
+    btn.setAttribute('aria-label', t('How to play')); btn.onclick = open; document.body.appendChild(btn);
   }
   let seen = false; try { seen = !!localStorage.getItem(key); } catch { /* */ }
-  if (!seen) {
+  if (!seen && autoOpen) {
     const openWhenReady = () => document.body.classList.contains('cinematic-opening')
       ? setTimeout(openWhenReady, 250)
       : open();

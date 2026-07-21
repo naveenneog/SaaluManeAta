@@ -1,0 +1,548 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://traditionalboardgames.example/schemas/v1.8/campaign.schema.json",
+  "title": "Traditional Board Games campaign manifest",
+  "description": "A bounded, data-only campaign graph whose playable chapters resolve through bundled replay, learn, puzzle, scenario, and live-game adapters.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "version",
+    "game",
+    "worldId",
+    "fallbackWorldId",
+    "ruleset",
+    "titleKey",
+    "summaryKey",
+    "provenanceId",
+    "estimatedMinutes",
+    "chapters"
+  ],
+  "properties": {
+    "schema": {
+      "const": 1
+    },
+    "id": {
+      "$ref": "#/$defs/campaignId"
+    },
+    "version": {
+      "$ref": "#/$defs/version"
+    },
+    "game": {
+      "$ref": "#/$defs/game"
+    },
+    "worldId": {
+      "$ref": "#/$defs/shortId"
+    },
+    "fallbackWorldId": {
+      "$ref": "#/$defs/shortId"
+    },
+    "ruleset": {
+      "$ref": "#/$defs/ruleset"
+    },
+    "titleKey": {
+      "$ref": "#/$defs/contentId"
+    },
+    "summaryKey": {
+      "$ref": "#/$defs/contentId"
+    },
+    "provenanceId": {
+      "$ref": "#/$defs/contentId"
+    },
+    "estimatedMinutes": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 240
+    },
+    "tags": {
+      "type": "array",
+      "maxItems": 12,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/shortId"
+      }
+    },
+    "chapters": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 12,
+      "items": {
+        "$ref": "#/$defs/chapter"
+      }
+    }
+  },
+  "$defs": {
+    "game": {
+      "enum": [
+        "ah",
+        "am",
+        "cb",
+        "sma"
+      ]
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 2147483647
+    },
+    "shortId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{0,63}$"
+    },
+    "campaignId": {
+      "type": "string",
+      "pattern": "^(?:ah|am|cb|sma)\\.[a-z][a-z0-9-]{0,63}$",
+      "maxLength": 68
+    },
+    "chapterId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{0,63}$"
+    },
+    "contentId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z0-9][a-z0-9_-]*){2,}$",
+      "maxLength": 160
+    },
+    "assetPath": {
+      "type": "string",
+      "pattern": "^assets/(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//)[A-Za-z0-9][A-Za-z0-9._/-]{0,254}$",
+      "maxLength": 256
+    },
+    "chapterSource": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/assetPath"
+        },
+        {
+          "pattern": "^assets/(?:campaigns|puzzles|scenarios)/"
+        },
+        {
+          "pattern": "\\.json$"
+        }
+      ]
+    },
+    "ruleset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^(?:ah|am|cb|sma)\\.[a-z][a-z0-9-]{0,63}$",
+          "maxLength": 68
+        },
+        "version": {
+          "$ref": "#/$defs/version"
+        }
+      }
+    },
+    "unlock": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "const": "always"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "chapterIds"
+          ],
+          "properties": {
+            "type": {
+              "enum": [
+                "all",
+                "any"
+              ]
+            },
+            "chapterIds": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 12,
+              "uniqueItems": true,
+              "items": {
+                "$ref": "#/$defs/chapterId"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "completion": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "const": "replayReachedEnd"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "const": "expectedSequence"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "const": "scenarioGoal"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "goalId"
+          ],
+          "properties": {
+            "type": {
+              "const": "declaredGoal"
+            },
+            "goalId": {
+              "$ref": "#/$defs/shortId"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "const": "acknowledge"
+            }
+          }
+        }
+      ]
+    },
+    "constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "maxActions",
+        "allowUndo",
+        "maxNodes"
+      ],
+      "properties": {
+        "maxActions": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4096
+        },
+        "allowUndo": {
+          "type": "boolean"
+        },
+        "maxNodes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 200000
+        }
+      }
+    },
+    "ai": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version",
+        "level",
+        "nodeBudget"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9.-]{0,63}$",
+          "maxLength": 64
+        },
+        "version": {
+          "$ref": "#/$defs/version"
+        },
+        "level": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3
+        },
+        "nodeBudget": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000
+        }
+      }
+    },
+    "chapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "order",
+        "kind",
+        "titleKey",
+        "briefKey",
+        "cultureKey",
+        "unlock",
+        "completion",
+        "constraints"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/chapterId"
+        },
+        "order": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 11
+        },
+        "kind": {
+          "enum": [
+            "demo",
+            "learn",
+            "puzzle",
+            "match",
+            "challenge",
+            "culture",
+            "finale"
+          ]
+        },
+        "titleKey": {
+          "$ref": "#/$defs/contentId"
+        },
+        "briefKey": {
+          "$ref": "#/$defs/contentId"
+        },
+        "cultureKey": {
+          "$ref": "#/$defs/contentId"
+        },
+        "source": {
+          "$ref": "#/$defs/chapterSource"
+        },
+        "unlock": {
+          "$ref": "#/$defs/unlock"
+        },
+        "completion": {
+          "$ref": "#/$defs/completion"
+        },
+        "constraints": {
+          "$ref": "#/$defs/constraints"
+        },
+        "ai": {
+          "$ref": "#/$defs/ai"
+        },
+        "narrationKeys": {
+          "type": "array",
+          "maxItems": 8,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/contentId"
+          }
+        },
+        "tags": {
+          "type": "array",
+          "maxItems": 8,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/shortId"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "demo"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "source"
+            ],
+            "properties": {
+              "source": {
+                "pattern": "\\.tbg-replay\\.json$"
+              },
+              "completion": {
+                "properties": {
+                  "type": {
+                    "const": "replayReachedEnd"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "learn"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "source"
+            ],
+            "properties": {
+              "completion": {
+                "properties": {
+                  "type": {
+                    "const": "expectedSequence"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "puzzle"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "source"
+            ],
+            "properties": {
+              "source": {
+                "pattern": "^assets/puzzles/"
+              },
+              "completion": {
+                "properties": {
+                  "type": {
+                    "const": "scenarioGoal"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "match",
+                  "finale"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "source",
+              "ai"
+            ],
+            "properties": {
+              "source": {
+                "pattern": "^assets/(?:campaigns|scenarios)/"
+              },
+              "completion": {
+                "properties": {
+                  "type": {
+                    "const": "declaredGoal"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "challenge"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "source"
+            ],
+            "properties": {
+              "completion": {
+                "properties": {
+                  "type": {
+                    "const": "scenarioGoal"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "culture"
+              }
+            }
+          },
+          "then": {
+            "not": {
+              "required": [
+                "source"
+              ]
+            },
+            "properties": {
+              "completion": {
+                "properties": {
+                  "type": {
+                    "const": "acknowledge"
+                  }
+                }
+              },
+              "constraints": {
+                "properties": {
+                  "maxActions": {
+                    "const": 0
+                  },
+                  "allowUndo": {
+                    "const": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
