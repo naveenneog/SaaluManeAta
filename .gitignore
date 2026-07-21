@@ -6,3 +6,4 @@ ios/
 tooling/_qa/
 tooling/__pycache__/
 .env
+build/
